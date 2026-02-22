@@ -1,10 +1,14 @@
 ---
+
+import planosImg from '../assets/planos.jpg';
+import arquitecto from '../assets/photo-arquitecto.avif';
+import construccion from '../assets/photo-contruccion.avif';
 const slides = [
   {
     id: 1,
     title: 'Construyendo el Futuro del Oriente Antioqueño',
     subtitle: 'Calidad, innovación y sostenibilidad en cada proyecto.',
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop',
+    image: arquitecto,
     link: '/contacto',
     buttonText: 'Contáctanos'
   },
@@ -12,7 +16,7 @@ const slides = [
     id: 2,
     title: 'Expertos en Obra Civil y Remodelaciones',
     subtitle: 'Transformamos espacios para mejorar tu calidad de vida.',
-    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1631&auto=format&fit=crop',
+    image: construccion,
     link: '/servicios',
     buttonText: 'Nuestros Servicios'
   },
@@ -20,7 +24,7 @@ const slides = [
     id: 3,
     title: 'Diseño Arquitectónico a tu Medida',
     subtitle: 'Hacemos realidad la casa de tus sueños.',
-    image: '/planos.jpg',
+    image: planosImg,
     link: '/proyectos',
     buttonText: 'Ver Proyectos'
   }
@@ -33,12 +37,12 @@ const slides = [
       <div 
         class={`slide ${index === 0 ? 'active' : ''}`}
         data-index={index}
-        style={{ backgroundImage: `linear-gradient(rgba(43, 61, 65, 0.6), rgba(43, 61, 65, 0.6)), url(${slide.image})` }}
+        style={{ backgroundImage: `linear-gradient(rgba(43, 61, 65, 0.6), rgba(43, 61, 65, 0.6)), url(${slide.image.src})` }}
       >
         <div class="container slide-content">
-          <h1 class="slide-title">{slide.title}</h1>
+          <h1 class="slide-title" aria-label={slide.title}>{slide.title}</h1>
           <p class="slide-subtitle">{slide.subtitle}</p>
-          <a href={slide.link} class="btn btn-primary">{slide.buttonText}</a>
+          <a href={slide.link} class="btn btn-primary" aria-label={slide.buttonText} role="button">{slide.buttonText}</a>
         </div>
       </div>
     ))}

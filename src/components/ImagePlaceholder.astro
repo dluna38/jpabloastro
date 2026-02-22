@@ -1,5 +1,6 @@
 ---
-// ImagePlaceholder.astro
+import { Image } from "astro:assets";
+import logoMain from "../assets/logo_clean_opti.webp"; 
 interface Props {
     bgColor?: string;
     logoSize?: string;
@@ -14,8 +15,8 @@ const {
 ---
 
 <div class="image-placeholder" style={{ backgroundColor: bgColor }}>
-    <img 
-        src="/logo_clean_opti.webp" 
+    <Image 
+        src={logoMain} 
         alt="Placeholder" 
         class="placeholder-logo" 
     />

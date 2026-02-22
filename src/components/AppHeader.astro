@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import logoMain from "../assets/logo_clean_opti.webp";
+import logoSolo from "../assets/logo_solo.png";
 // Header.astro
 ---
 
@@ -6,14 +9,14 @@
   <div class="container header-container">
     <div class="logo">
       <a href="/" class="link">
-        <img
-          src="/logo_clean_opti.webp"
-          alt="Logo Juan Pablo II Construcciones S.A.S."
+        <Image
+          src={logoMain}
+          alt="Logo Construcciones Juan Pablo II  S.A.S."
           class="logo-image logo-desktop"
         />
-        <img
-          src="/logo_solo.png"
-          alt="Logo Juan Pablo II"
+        <Image
+          src={logoSolo}
+          alt="Logo Construcciones Juan Pablo II  S.A.S."
           class="logo-image logo-mobile"
         />
       </a>

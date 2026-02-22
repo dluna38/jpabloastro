@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import logoFull from "../assets/logo2_transparente.webp";
 
 const currentYear = new Date().getFullYear();
 ---
@@ -7,7 +9,7 @@ const currentYear = new Date().getFullYear();
     <div class="container footer-container">
       <div class="footer-section company-info">
         <div class="logo">
-          <img src="/logo2_transparente.webp" alt="Logo Juan Pablo II Construcciones S.A.S." class="logo-image" />
+          <Image src={logoFull} alt="Logo Juan Pablo II Construcciones S.A.S." class="logo-image" />
         </div>
         <p class="description">
           Construyendo el futuro del Oriente Antioqueño con calidad, compromiso y sostenibilidad.

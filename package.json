@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/vue": "^5.1.4",
     "@sanity/client": "^7.15.0",
     "@sanity/image-url": "^2.0.3",

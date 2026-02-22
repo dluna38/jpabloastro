@@ -3,7 +3,7 @@ import {createImageUrlBuilder} from '@sanity/image-url';
 
 export const sanityClient = createClient({
   projectId: 'tk84jgoc', // Reemplaza con tu ID de Sanity
-  dataset: 'testing',
+  dataset: 'production', // Reemplaza con tu dataset
   apiVersion: '2024-03-01', // Usa la fecha actual para la versión de la API
   useCdn: true, // `false` si quieres datos frescos siempre (SSR)
 });

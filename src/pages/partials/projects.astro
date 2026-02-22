@@ -1,10 +1,10 @@
 ---
 export const partial = true;
+export const prerender = false;
 
 import type { Proyecto } from '../../../types/sanity';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { sanityClient } from '../../lib/sanity';
-// Importamos imageUrlFor para que las imágenes de las nuevas tarjetas no se rompan
 import { imageUrlFor } from '../../lib/imageUrlFor'; 
 
 // 1. Obtenemos los valores crudos de la URL
@@ -15,7 +15,7 @@ const rawLastId = Astro.url.searchParams.get('lastId');
 const lastDate = (!rawLastDate || rawLastDate === 'undefined' || rawLastDate === 'null') ? null : rawLastDate;
 const lastId = (!rawLastId || rawLastId === 'undefined' || rawLastId === 'null') ? null : rawLastId;
 
-const limit = 3;
+const limit = 10;
 
 // 3. Usamos $fetchLimit como parámetro de Sanity en lugar de interpolar el string. Es mucho más seguro.
 const query = `*[_type == "proyecto" && (
@@ -35,14 +35,8 @@ const query = `*[_type == "proyecto" && (
 let newProjects = await sanityClient.fetch(query, { 
   lastDate, 
   lastId, 
-  fetchLimit: limit + 1 
+  fetchLimit: limit 
 });
-
-const hasMore = newProjects.length > limit;
-
-if (hasMore) {
-  newProjects.pop();
-}
 
 const lastItem = newProjects[newProjects.length - 1];
 
@@ -51,8 +45,7 @@ if (lastItem) {
   Astro.response.headers.set('x-last-date', lastItem.fechaPublicacion || '');
   Astro.response.headers.set('x-last-id', lastItem._id || '');
 }
-
-Astro.response.headers.set('x-has-more', hasMore ? 'true' : 'false');
+Astro.response.headers.set('x-data-length', newProjects.length.toString());
 ---
 
 {newProjects.map((project: Proyecto) => (

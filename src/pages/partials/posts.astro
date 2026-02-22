@@ -1,19 +1,26 @@
 ---
 // src/pages/partials/posts.astro
 export const partial = true;
+export const prerender = false;
 
-import type { Post } from '../../../types/sanity';
+import type { Publicacion as Post } from '../../../types/sanity';
 import PostCard from '../../components/PostCard.astro';
 import { sanityClient } from '../../lib/sanity';
 
 const lastDateParam = Astro.url.searchParams.get('lastDate');
 const lastIdParam = Astro.url.searchParams.get('lastId');
-const limit = 6;
+
+const lastDate = (!lastDateParam || lastDateParam === 'undefined' || lastDateParam === 'null') ? null : lastDateParam;
+const lastId = (!lastIdParam || lastIdParam === 'undefined' || lastIdParam === 'null') ? null : lastIdParam;
+
+
+
+const limit = 10;
 
 const query = `*[_type == "publicacion" && defined(slug.current) && (
   fechaPublicacion < $lastDate || 
   (fechaPublicacion == $lastDate && _id < $lastId)
-)] | order(fechaPublicacion desc, _id desc) [0...${limit}] {
+)] | order(fechaPublicacion desc, _id desc) [0...$limit] {
   _id,
   titulo,
   slug,
@@ -23,8 +30,9 @@ const query = `*[_type == "publicacion" && defined(slug.current) && (
 }`;
 
 const newPosts = await sanityClient.fetch(query, { 
-    lastDate: lastDateParam, 
-    lastId: lastIdParam 
+    lastDate: lastDate, 
+    lastId: lastId,
+    limit: limit
 });
 
 // 1. Extraer los datos del último post para los nuevos cursores
@@ -36,10 +44,7 @@ if (lastItem) {
     Astro.response.headers.set('x-last-id', lastItem._id);
 }
 
-// 3. Indicar si se llegó al final
-if (newPosts.length < limit) {
-    Astro.response.headers.set('x-has-more', 'false');
-}
+Astro.response.headers.set('x-data-length', newPosts.length.toString());
 ---
 
 {newPosts.map((post: Post) => (

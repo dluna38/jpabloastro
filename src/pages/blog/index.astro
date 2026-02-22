@@ -3,31 +3,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionTitle from '../../components/SectionTitle.astro';
 import PostCard from '../../components/PostCard.astro';
 import { sanityClient } from '../../lib/sanity';
-import type { Post } from '../../../types/sanity';
+import type { Publicacion as Post } from '../../../types/sanity';
 
-const LIMIT = 6;
+const LIMIT = 10;
 
 // Consulta inicial (SSR)
-const queryPosts = `*[_type == "publicacion" && defined(slug.current)] | order(fechaPublicacion desc, _id desc) [0...${LIMIT}] {
-  _id,
-  titulo,
-  slug,
-  fechaPublicacion,
-  imagen,
-  extracto
+const queryPosts = `{
+  "items": *[_type == "publicacion"] | order(fechaPublicacion desc, _id desc) [0...${LIMIT}] {
+    _id,
+    titulo,
+    slug,
+    fechaPublicacion,
+    imagen,
+    extracto
+  },
+  "total": count(*[_type == "publicacion"])
 }`;
 
-let posts = [];
-try {
-  posts = await sanityClient.fetch(queryPosts);
-} catch (e) {
-  console.error(e);
-}
-
-const hasProjects = posts.length > 0;
-// Guardamos los cursores iniciales para el JS del cliente
-const lastDate = posts.length > 0 ? posts[posts.length - 1].fechaPublicacion : null;
-const lastId = posts.length > 0 ? posts[posts.length - 1]._id : null;
+const { items: posts, total } = await sanityClient.fetch(queryPosts);
+const lastItem = posts[posts.length - 1];
+const hasMoreInitial = posts.length < total;
 ---
 
 <BaseLayout 
@@ -49,19 +44,21 @@ const lastId = posts.length > 0 ? posts[posts.length - 1]._id : null;
         ))}
       </div>
 
-      {!hasProjects && (
+      {posts.length === 0 && (
         <div class="no-posts">
           <p>Próximamente publicaremos noticias y artículos.</p>
         </div>
       )}
 
-      {posts.length >= LIMIT && (
+      {hasMoreInitial && (
         <div class="pagination-controls">
           <button 
             id="load-more-btn" 
             class="btn btn-secondary load-more-btn"
-            data-last-date={lastDate}
-            data-last-id={lastId}
+            data-lastdate={lastItem?.fechaPublicacion}
+            data-lastid={lastItem?._id}
+            data-totalitems={total}
+            data-totalInitial={posts.length}
           >
             Cargar más
           </button>
@@ -72,48 +69,52 @@ const lastId = posts.length > 0 ? posts[posts.length - 1]._id : null;
 </BaseLayout>
 
 <script>
+  const btnLoadMore = document.getElementById('load-more-btn') as HTMLButtonElement | null;
+  const grid = document.getElementById('posts-grid');
+  console.log(btnLoadMore?.dataset);
+
+  let lastDateForServer=btnLoadMore?.dataset.lastdate;
+  let lastIdForServer=btnLoadMore?.dataset.lastid;
+
+  const totalItems = parseInt(btnLoadMore?.dataset.totalitems || '0', 10);
+  const totalInitial = parseInt(btnLoadMore?.dataset.totalinitial || '0', 10);
+  let carryingItems = totalInitial;
+
   const setupPagination = () => {
-    const btn = document.getElementById('load-more-btn') as HTMLButtonElement;
-    const grid = document.getElementById('posts-grid');
-    
-    if (!btn || !grid) return;
+    if (!btnLoadMore || !grid) return;
 
-    btn.addEventListener('click', async () => {
-      // Obtenemos los cursores actuales de los atributos del botón
-      const lastDate = btn.getAttribute('data-last-date');
-      const lastId = btn.getAttribute('data-last-id');
+    btnLoadMore.addEventListener('click', async () => {
+      if (!lastDateForServer || !lastIdForServer) return;
 
-      btn.disabled = true;
-      btn.innerText = 'Cargando...';
-
+      btnLoadMore.disabled = true;
+      btnLoadMore.innerText = 'Cargando...';
+      
       try {
-        const response = await fetch(`/partials/posts?lastDate=${lastDate}&lastId=${lastId}`);
+        const response = await fetch(`/partials/posts?lastDate=${lastDateForServer}&lastId=${lastIdForServer}`);
         const html = await response.text();
 
         if (html.trim().length > 0) {
           grid.insertAdjacentHTML('beforeend', html);
 
           // Leemos los nuevos cursores desde los headers de la respuesta
-          const newDate = response.headers.get('x-last-date');
-          const newId = response.headers.get('x-last-id');
-          const hasMore = response.headers.get('x-has-more');
+          lastDateForServer = response.headers.get('x-last-date') || undefined;
+          lastIdForServer = response.headers.get('x-last-id')|| undefined;
+          const dataLength = parseInt(response.headers.get('x-data-length') || '0', 10);
 
-          if (newDate && newId) {
-            btn.setAttribute('data-last-date', newDate);
-            btn.setAttribute('data-last-id', newId);
-          }
-
-          if (hasMore === 'false') {
-            btn.remove();
+    
+          carryingItems += dataLength;
+          
+          if (carryingItems >= totalItems) {
+            btnLoadMore.closest('.pagination-controls')?.remove();
           }
         } else {
-          btn.remove();
+          btnLoadMore.remove();
         }
       } catch (e) {
         console.error("Error en paginación:", e);
       } finally {
-        btn.disabled = false;
-        btn.innerText = 'Cargar más';
+        btnLoadMore.disabled = false;
+        btnLoadMore.innerText = 'Cargar más';
       }
     });
   };

@@ -1,0 +1,65 @@
+---
+export const partial = true;
+
+import type { Proyecto } from '../../../types/sanity';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { sanityClient } from '../../lib/sanity';
+// Importamos imageUrlFor para que las imágenes de las nuevas tarjetas no se rompan
+import { imageUrlFor } from '../../lib/imageUrlFor'; 
+
+// 1. Obtenemos los valores crudos de la URL
+const rawLastDate = Astro.url.searchParams.get('lastDate');
+const rawLastId = Astro.url.searchParams.get('lastId');
+
+// 2. Limpiamos los valores. Si llega la palabra "undefined" o "null", lo pasamos a null real.
+const lastDate = (!rawLastDate || rawLastDate === 'undefined' || rawLastDate === 'null') ? null : rawLastDate;
+const lastId = (!rawLastId || rawLastId === 'undefined' || rawLastId === 'null') ? null : rawLastId;
+
+const limit = 3;
+
+// 3. Usamos $fetchLimit como parámetro de Sanity en lugar de interpolar el string. Es mucho más seguro.
+const query = `*[_type == "proyecto" && (
+  $lastDate == null || 
+  fechaPublicacion < $lastDate || 
+  (fechaPublicacion == $lastDate && _id < $lastId)
+)] | order(fechaPublicacion desc, _id desc) [0...$fetchLimit] {
+  _id,
+  title,
+  slug,
+  location,
+  gallery,
+  fechaPublicacion
+}`;
+
+// Pedimos limit + 1 enviando los parámetros limpios
+let newProjects = await sanityClient.fetch(query, { 
+  lastDate, 
+  lastId, 
+  fetchLimit: limit + 1 
+});
+
+const hasMore = newProjects.length > limit;
+
+if (hasMore) {
+  newProjects.pop();
+}
+
+const lastItem = newProjects[newProjects.length - 1];
+
+if (lastItem) {
+  // Aseguramos que si no hay fecha, pase un string vacío o null controlable
+  Astro.response.headers.set('x-last-date', lastItem.fechaPublicacion || '');
+  Astro.response.headers.set('x-last-id', lastItem._id || '');
+}
+
+Astro.response.headers.set('x-has-more', hasMore ? 'true' : 'false');
+---
+
+{newProjects.map((project: Proyecto) => (
+  <ProjectCard 
+    title={project.title} 
+    slug={project.slug.current}
+    location={project.location}
+    imageUrl={project.gallery && project.gallery[0] ? imageUrlFor(project.gallery[0]).width(600).height(400).url() : undefined}
+  />
+))}

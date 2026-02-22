@@ -1,0 +1,164 @@
+---
+export const prerender = false;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import formatDateCustom from '../../lib/formatDateCustom';
+import { sanityClient, imageUrlFor } from '../../lib/sanity';
+import { PortableText } from "astro-portabletext";
+
+// 1. Obtener el slug de la URL
+const { slug } = Astro.params;
+
+// 2. Consulta a Sanity
+const query = `*[_type == "publicacion" && slug.current == $slug][0] {
+  _id,
+  titulo,
+  contenido,
+  slug,
+  fechaPublicacion,
+  imagen
+}`;
+
+const post = await sanityClient.fetch(query, { slug });
+
+// 3. Si no existe el post, redirigir o manejar error
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const title = `${post.titulo} | Construcciones Juan Pablo II`;
+---
+
+<BaseLayout title={title} description={post.titulo}>
+  <div class="post-detail-page">
+    <div class="post-header">
+      <div class="container">
+        <div class="meta">
+          <span class="date">{formatDateCustom(post.fechaPublicacion)}</span>
+        </div>
+        <h1 class="post-title">{post.titulo}</h1>
+      </div>
+    </div>
+
+    <div class="container content-section">
+      {post.imagen && (
+        <div class="post-image-container">
+          <img 
+            src={imageUrlFor(post.imagen).width(1200).height(600).url()} 
+            alt={post.titulo} 
+            class="main-image" 
+          />
+        </div>
+      )}
+
+      <div class="post-body">
+        {post.contenido ? (
+          <PortableText value={post.contenido} />
+        ) : (
+          <p>Este artículo no tiene contenido.</p>
+        )}
+      </div>
+
+      <div class="back-link">
+        <a href="/blog" class="btn btn-secondary">&larr; Volver a las publicaciones</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .post-header {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 4rem 0 3rem;
+    text-align: center;
+  }
+
+  .meta {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .post-title {
+    font-size: 2.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.2;
+    color: var(--color-white);
+  }
+
+  .content-section {
+    padding: 3rem 1rem 5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .post-image-container {
+    margin-bottom: 3rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
+  }
+
+  .main-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .post-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-text);
+  }
+
+  /* Estilos para el contenido de Sanity (PortableText) */
+  /* En Astro, usamos :global() para afectar a componentes externos */
+  .post-body :global(h2) {
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .post-body :global(h3) {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .post-body :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .post-body :global(ul) {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .post-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+  }
+
+  .back-link {
+    margin-top: 4rem;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .post-title {
+      font-size: 2rem;
+    }
+  }
+</style>

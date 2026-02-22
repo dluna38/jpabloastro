@@ -1,0 +1,55 @@
+---
+// 1. Definición de Props (Equivalente a defineProps de Vue)
+interface Props {
+  title: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'p';
+  align?: 'left' | 'center' | 'right';
+  color?: string;
+  fontSize?: string;
+}
+
+const { 
+  title, 
+  as: Tag = 'h2', // Renombramos 'as' a 'Tag' para usarlo como etiqueta
+  align = 'center', 
+  color = 'var(--color-primary)', 
+  fontSize = '2rem' 
+} = Astro.props;
+
+// 2. Lógica de clases (Equivalente al computed alignClass)
+const alignClass = align;
+---
+
+<Tag class={`section-title ${alignClass}`} style={{ color, fontSize }}>
+  {title}
+</Tag>
+
+<style>
+  /* El estilo es scoped por defecto en Astro */
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--color-primary);
+    position: relative;
+    display: block;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-accent);
+    margin-top: 0.5rem;
+  }
+
+  /* Alineaciones */
+  .center { text-align: center; }
+  .center::after { margin-left: auto; margin-right: auto; }
+
+  .left { text-align: left; }
+  .left::after { margin-left: 0; margin-right: auto; }
+
+  .right { text-align: right; }
+  .right::after { margin-left: auto; margin-right: 0; }
+</style>

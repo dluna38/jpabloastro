@@ -1,0 +1,115 @@
+---
+import SectionTitle from './SectionTitle.astro';
+
+const stats = [
+  { target: 10, label: "Años en Servicio", id: "years" },
+  { target: 50, label: "Proyectos Completados", id: "projects" },
+  { target: 15000, label: "m² Construidos", id: "meters" }
+];
+---
+
+<section class="stats-section" id="stats-section">
+    <div class="container">
+        <SectionTitle title="Nuestra Historia en Cifras" align="center" color="var(--color-white)" />
+        <div class="stats-grid">
+            {stats.map(stat => (
+                <div class="stat-card">
+                    <span class="stat-number" data-target={stat.target} id={`stat-${stat.id}`}>
+                        +0
+                    </span>
+                    <span class="stat-label">{stat.label}</span>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    const animateValue = (element: HTMLElement, start: number, end: number, duration: number) => {
+        let startTime: number | null = null;
+        
+        const step = (timestamp: number) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+            
+            // Aplicar formato de miles si es el de metros (valor alto)
+            element.textContent = `+${value.toLocaleString()}`;
+            
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    };
+
+    const initStats = () => {
+        const section = document.querySelector('#stats-section');
+        const counters = document.querySelectorAll('.stat-number');
+        let hasAnimated = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0]?.isIntersecting && !hasAnimated) {
+                hasAnimated = true;
+                counters.forEach((counter) => {
+                    const target = parseInt(counter.getAttribute('data-target') || '0');
+                    const duration = target > 1000 ? 2000 : 1500;
+                    animateValue(counter as HTMLElement, 0, target, duration);
+                });
+                if (section) observer.unobserve(section);
+            }
+        }, { threshold: 0.2 });
+
+        if (section) observer.observe(section);
+    };
+
+    // Ejecutar en carga inicial y tras navegación con ViewTransitions
+    initStats();
+    document.addEventListener('astro:page-load', initStats);
+</script>
+
+<style>
+.stats-section {
+    padding: 3rem 1rem; /* Ajustado para dar más aire */
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.stat-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-light);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    min-width: 3ch;
+}
+
+.stat-label {
+    display: block;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .stat-number { font-size: 2.5rem; }
+    .stat-label { font-size: 0.95rem; }
+}
+</style>

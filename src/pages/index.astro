@@ -1,0 +1,179 @@
+---
+import { mockServices } from "../lib/mockData";
+import BaseLayout  from "../layouts/BaseLayout.astro";
+import HeroCarousel from "../components/HeroCarousel.astro";
+import SectionTitle from "../components/SectionTitle.astro";
+import StatsSection from "../components/StatsSection.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import ProjectSection from "../components/ProjectsSection.astro";
+import TestimonialsSection from "../components/TestimonialsSection.astro";
+import PostSection from "../components/PostSection.astro";
+
+// Mock Services (keep for now as service implementation wasn't requested yet)
+const displayedServices = mockServices.slice(0, 3);
+
+const serviceLinks: Record<string, string> = {
+	"Obra Civil": "obra-civil",
+	Remodelaciones: "remodelacion",
+	"Diseño Arquitectónico": "diseno-arquitectonico",
+};
+---
+
+<head>
+	<meta
+		name="description"
+		content="Inicio - Construcciones Juan Pablo II S.A.S. Empresa líder en construcción y remodelación en San Carlos, Antioquia."
+	/>
+</head>
+<BaseLayout title="Inicio | Construcciones Juan Pablo II">
+<div class="home-page">
+	<HeroCarousel />
+
+	<section class="intro-section">
+		<div class="container">
+			<div class="intro-content">
+				<SectionTitle
+					title="Construyendo Sueños en el Oriente Antioqueño"
+					align="center"
+				/>
+				<p class="section-text">
+					En Construcciones Juan Pablo II, nos dedicamos a transformar
+					ideas en estructuras sólidas y funcionales. Con sede en San
+					Carlos, Antioquia, somos su aliado estratégico en obra
+					civil, diseño y remodelación.
+				</p>
+				<a href="/nosotros" class="btn btn-primary"
+					>Conoce Más Sobre Nosotros</a
+				>
+			</div>
+		</div>
+	</section>
+	<StatsSection />
+	<section class="services-section">
+		<div class="container">
+			<SectionTitle title="Nuestros Servicios" align="right" />
+			<div class="services-grid">
+				{displayedServices.map((service) => (
+					<ServiceCard
+						title={service.title}
+						description={service.description}
+						icon={service.icon}
+						link={`/servicios#${serviceLinks[service.title]}`}
+					/>
+				))}
+			</div>
+			<div class="center-btn">
+				<a href="/servicios" class="btn btn-secondary"
+					>Ver Todos los Servicios</a
+				>
+			</div>
+		</div>
+	</section>
+	<ProjectSection  />
+	<TestimonialsSection />
+	<PostSection />
+	<section class="cta-section">
+		<div class="container">
+			<h2 class="cta-title">
+				¿Estás listo para construir el proyecto de tus sueños?
+			</h2>
+			<a href="/contacto" class="btn btn-white btn-large"
+				>Contáctanos Hoy</a
+			>
+		</div>
+	</section>
+</div>
+</BaseLayout>
+<style>
+	/* ── Section 1: Intro (white) ── */
+	.intro-section {
+		padding: 2rem 1rem;
+		text-align: center;
+		background-color: var(--color-white);
+		/* Powder Petal */
+	}
+
+	.intro-content {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.section-text {
+		font-size: 1.1rem;
+		color: var(--color-text);
+		margin-bottom: 2rem;
+		line-height: 1.8;
+	}
+
+	/* ── Section 3: Services (light beige) ── */
+	.services-section {
+		padding: 2rem 1rem;
+		background-color: var(--color-white);
+		/* Pure White */
+	}
+
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-bottom: 3rem;
+	}
+
+	.center-btn {
+		text-align: center;
+	}
+
+	/* ── Responsive ── */
+	@media (max-width: 768px) {
+		.section-title {
+			font-size: 2rem;
+		}
+	}
+
+	/* ── Section: CTA (dark background) ── */
+	.cta-section {
+		padding: 6rem 1rem;
+		background-color: var(--color-accent);
+		/* Brick Ember */
+		text-align: center;
+		color: var(--color-white);
+	}
+
+	.cta-title {
+		font-size: 2.8rem;
+		margin-bottom: 2.5rem;
+		color: var(--color-white);
+		max-width: 800px;
+		margin-left: auto;
+		margin-right: auto;
+		line-height: 1.2;
+	}
+
+	.btn-large {
+		padding: 1rem 2.5rem;
+		font-size: 1.2rem;
+		border-radius: 50px;
+		/* Rounded button for CTA */
+	}
+
+	.btn-white {
+		background-color: var(--color-white);
+		color: var(--color-accent);
+		border: 2px solid var(--color-white);
+	}
+
+	.btn-white:hover {
+		background-color: transparent;
+		color: var(--color-white);
+	}
+
+	@media (max-width: 768px) {
+		.cta-section {
+			padding: 4rem 1rem;
+		}
+
+		.cta-title {
+			font-size: 2rem;
+		}
+	}
+</style>

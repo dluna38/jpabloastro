@@ -1,0 +1,38 @@
+---
+import AppHeader from "../components/AppHeader.astro";
+import AppFooter from "../components/AppFooter.astro";
+import '../styles/main.css';
+const { title } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Empresa de construcción líder en el Oriente Antioqueño. Obra civil, remodelaciones y diseño arquitectónico." />
+    <title>{title}</title>
+  </head>
+  <body>
+    <!-- Wrap the slot element with your existing layout templating -->
+    <div class="layout">
+      <AppHeader />
+      <main class="main-content">
+        <slot />
+      </main>
+      <AppFooter />
+    </div>
+  </body>
+</html>
+
+<style>
+  .layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    flex: 1;
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import PostCard from '../../components/PostCard.astro';
+import { sanityClient } from '../../lib/sanity';
+import type { Post } from '../../../types/sanity';
+
+const LIMIT = 6;
+
+// Consulta inicial (SSR)
+const queryPosts = `*[_type == "publicacion" && defined(slug.current)] | order(fechaPublicacion desc, _id desc) [0...${LIMIT}] {
+  _id,
+  titulo,
+  slug,
+  fechaPublicacion,
+  imagen,
+  extracto
+}`;
+
+let posts = [];
+try {
+  posts = await sanityClient.fetch(queryPosts);
+} catch (e) {
+  console.error(e);
+}
+
+const hasProjects = posts.length > 0;
+// Guardamos los cursores iniciales para el JS del cliente
+const lastDate = posts.length > 0 ? posts[posts.length - 1].fechaPublicacion : null;
+const lastId = posts.length > 0 ? posts[posts.length - 1]._id : null;
+---
+
+<BaseLayout 
+  title="Blog | Construcciones Juan Pablo II" 
+  description="Noticias, artículos y actualizaciones sobre el mundo de la construcción en el Oriente Antioqueño."
+>
+  <div class="blog-page">
+    <div class="page-header">
+      <div class="container">
+        <SectionTitle title="Blog y Noticias" align="center" color="white" />
+        <p class="page-subtitle">Mantente informado sobre nuestros últimos acontecimientos.</p>
+      </div>
+    </div>
+
+    <section class="container content-section">
+      <div id="posts-grid" class="posts-grid">
+        {posts.map((post: Post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+
+      {!hasProjects && (
+        <div class="no-posts">
+          <p>Próximamente publicaremos noticias y artículos.</p>
+        </div>
+      )}
+
+      {posts.length >= LIMIT && (
+        <div class="pagination-controls">
+          <button 
+            id="load-more-btn" 
+            class="btn btn-secondary load-more-btn"
+            data-last-date={lastDate}
+            data-last-id={lastId}
+          >
+            Cargar más
+          </button>
+        </div>
+      )}
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const setupPagination = () => {
+    const btn = document.getElementById('load-more-btn') as HTMLButtonElement;
+    const grid = document.getElementById('posts-grid');
+    
+    if (!btn || !grid) return;
+
+    btn.addEventListener('click', async () => {
+      // Obtenemos los cursores actuales de los atributos del botón
+      const lastDate = btn.getAttribute('data-last-date');
+      const lastId = btn.getAttribute('data-last-id');
+
+      btn.disabled = true;
+      btn.innerText = 'Cargando...';
+
+      try {
+        const response = await fetch(`/partials/posts?lastDate=${lastDate}&lastId=${lastId}`);
+        const html = await response.text();
+
+        if (html.trim().length > 0) {
+          grid.insertAdjacentHTML('beforeend', html);
+
+          // Leemos los nuevos cursores desde los headers de la respuesta
+          const newDate = response.headers.get('x-last-date');
+          const newId = response.headers.get('x-last-id');
+          const hasMore = response.headers.get('x-has-more');
+
+          if (newDate && newId) {
+            btn.setAttribute('data-last-date', newDate);
+            btn.setAttribute('data-last-id', newId);
+          }
+
+          if (hasMore === 'false') {
+            btn.remove();
+          }
+        } else {
+          btn.remove();
+        }
+      } catch (e) {
+        console.error("Error en paginación:", e);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Cargar más';
+      }
+    });
+  };
+
+  setupPagination();
+  document.addEventListener('astro:page-load', setupPagination);
+</script>
+
+<style>
+  .page-header {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 4rem 0;
+    text-align: center;
+  }
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-light);
+    margin-top: 1rem;
+  }
+  .content-section { padding: 5rem 1rem; }
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+  }
+  .pagination-controls { text-align: center; margin-top: 4rem; }
+  .load-more-btn { padding: 0.75rem 2.5rem; font-size: 1.1rem; cursor: pointer; }
+  .no-posts { text-align: center; padding: 3rem; font-style: italic; }
+</style>

@@ -1,0 +1,165 @@
+---
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-section company-info">
+        <div class="logo">
+          <img src="/logo2_transparente.webp" alt="Logo Juan Pablo II Construcciones S.A.S." class="logo-image" />
+        </div>
+        <p class="description">
+          Construyendo el futuro del Oriente Antioqueño con calidad, compromiso y sostenibilidad.
+        </p>
+      </div>
+
+      <div class="footer-section links">
+        <h4 class="footer-heading">Enlaces Rápidos</h4>
+        <ul>
+          <li>
+            <a href="/">Inicio</a>
+          </li>
+          <li>
+            <a href="/nosotros">Nosotros</a>
+          </li>
+          <li>
+            <a href="/proyectos">Proyectos</a>
+          </li>
+          <li>
+            <a href="/servicios">Servicios</a>
+          </li>
+          <li>
+            <a href="/contacto">Contacto</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-section contact">
+        <h4 class="footer-heading">Contacto</h4>
+        <ul>
+          <li>
+            <strong>Dirección:</strong> San Carlos, Antioquia
+          </li>
+          <li>
+            <strong>Teléfono:</strong> +57 300 123 4567
+          </li>
+          <li>
+            <strong>Email:</strong> info@construccionesjuanpabloii.com
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; { currentYear } Construcciones Juan Pablo II S.A.S. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <style scoped>
+.footer {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 4rem 0 0;
+  overflow: hidden;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 1fr;
+  gap: 3rem;
+  padding-bottom: 2rem;
+}
+
+.footer-title {
+  color: var(--color-white);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: var(--color-light);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.footer-heading {
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.links ul,
+.contact ul {
+  list-style: none;
+}
+
+.links li,
+.contact li {
+  margin-bottom: 0.8rem;
+}
+
+.links a {
+  color: var(--color-light);
+}
+
+.links a:hover {
+  color: var(--color-white);
+  text-decoration: underline;
+}
+
+.contact li {
+  color: var(--color-light);
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.footer-bottom {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-light);
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.logo-image {
+  height: 165px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .logo-image {
+    height: 165px;
+  }
+
+  .footer {
+    padding: 2.5rem 0 0;
+  }
+}
+</style>

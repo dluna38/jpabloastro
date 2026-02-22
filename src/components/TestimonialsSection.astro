@@ -1,0 +1,199 @@
+---
+import SectionTitle from './SectionTitle.astro';
+
+const testimonials = [
+    { id: 1, name: 'Carlos Rodríguez', location: 'San Carlos', serviceType: 'Obra Civil', text: 'Construcciones Juan Pablo II hizo realidad el sueño de nuestra familia. Su atención al detalle y compromiso con los plazos fue excepcional.' },
+    { id: 2, name: 'Ana María Gómez', location: 'San Rafael', serviceType: 'Remodelación', text: 'Reformaron nuestras oficinas con un profesionalismo increíble. El diseño moderno y la funcionalidad superaron nuestras expectativas.' },
+    { id: 3, name: 'Jorge Martínez', location: 'Granada', serviceType: 'Inversión Inmobiliaria', text: 'La solidez técnica y la transparencia en el manejo del presupuesto me dan total confianza para seguir invirtiendo en sus proyectos.' },
+    { id: 4, name: 'Luisa Fernanda Henao', location: 'El Peñol', serviceType: 'Diseño Arquitectónico', text: 'Supieron interpretar perfectamente lo que queríamos. El diseño bioclimático que propusieron ha hecho nuestra casa muy fresca y acogedora.' },
+    { id: 5, name: 'Roberto Valencia', location: 'Guatapé', serviceType: 'Mantenimiento', text: 'Excelente servicio de post-venta y mantenimiento. Siempre están disponibles para solucionar cualquier inquietud rápidamente.' },
+    { id: 6, name: 'Marta Cecilia López', location: 'San Carlos', serviceType: 'Remodelación', text: 'Transformaron mi cocina antigua en un espacio moderno y funcional. La calidad de los acabados es impecable.' }
+];
+---
+
+<section class="testimonials-section">
+    <div class="container">
+        <SectionTitle title="Lo que dicen nuestros clientes" align="right" />
+
+        <div class="carousel-container" id="testimonial-carousel">
+            <div class="carousel-track" id="carousel-track">
+                {testimonials.map((t) => (
+                    <div class="testimonial-item">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"{t.text}"</p>
+                            <div class="testimonial-author">
+                                <h4 class="author-name">{t.name}</h4>
+                                <span class="author-role">{t.location} • {t.serviceType}</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+        
+        <div class="carousel-indicators" id="carousel-indicators">
+            </div>
+    </div>
+</section>
+
+<script>
+    const initCarousel = () => {
+        const track = document.getElementById('carousel-track') as HTMLElement;
+        const container = document.getElementById('testimonial-carousel');
+        const indicatorsContainer = document.getElementById('carousel-indicators');
+        const items = document.querySelectorAll('.testimonial-item');
+        
+        let currentOffset = 0;
+        let itemsToShow = 3;
+        let autoPlayInterval: any = null;
+
+        const getItemsToShow = () => {
+            if (window.innerWidth < 768) return 1;
+            if (window.innerWidth < 1024) return 2;
+            return 3;
+        };
+
+        const updateCarousel = () => {
+            itemsToShow = getItemsToShow();
+            const maxIndex = testimonialsLength - itemsToShow;
+            if (currentOffset > maxIndex) currentOffset = maxIndex;
+
+            // Aplicar anchos dinámicos (Equivalente a itemStyle de Vue)
+            const itemWidth = 100 / itemsToShow;
+            items.forEach((item) => {
+                (item as HTMLElement).style.flex = `0 0 ${itemWidth}%`;
+                (item as HTMLElement).style.maxWidth = `${itemWidth}%`;
+            });
+
+            // Mover track (Equivalente a trackStyle de Vue)
+            track.style.transform = `translateX(-${currentOffset * itemWidth}%)`;
+            
+            updateIndicators();
+        };
+
+        const testimonialsLength = items.length;
+
+        const updateIndicators = () => {
+            if (!indicatorsContainer) return;
+            const numIndicators = testimonialsLength - itemsToShow + 1;
+            
+            indicatorsContainer.innerHTML = '';
+            for (let i = 0; i < numIndicators; i++) {
+                const dot = document.createElement('span');
+                dot.className = `indicator ${i === currentOffset ? 'active' : ''}`;
+                dot.onclick = () => {
+                    currentOffset = i;
+                    updateCarousel();
+                };
+                indicatorsContainer.appendChild(dot);
+            }
+        };
+
+        const nextSlide = () => {
+            const maxIndex = testimonialsLength - itemsToShow;
+            currentOffset = currentOffset >= maxIndex ? 0 : currentOffset + 1;
+            updateCarousel();
+        };
+
+        const startAutoPlay = () => {
+            if (!autoPlayInterval) autoPlayInterval = setInterval(nextSlide, 3000);
+        };
+
+        const stopAutoPlay = () => {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        };
+
+        window.addEventListener('resize', updateCarousel);
+        container?.addEventListener('mouseenter', stopAutoPlay);
+        container?.addEventListener('mouseleave', startAutoPlay);
+
+        updateCarousel();
+        startAutoPlay();
+    };
+
+    // Ejecutar en carga y tras navegación SPA de Astro
+    initCarousel();
+    document.addEventListener('astro:page-load', initCarousel);
+</script>
+
+<style>
+.testimonials-section {
+    padding: 2rem 1rem;
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    overflow: hidden;
+}
+
+.carousel-container {
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    padding: 1rem 0 2rem 0;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.testimonial-item {
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.testimonial-card {
+    background-color: var(--color-white);
+    padding: 2.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--color-neutral);
+    height: 100%;
+    justify-content: space-between;
+}
+
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.author-name {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--color-primary);
+}
+
+.author-role {
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+    font-weight: 500;
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+:global(.indicator) {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-neutral);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+:global(.indicator.active) {
+    background-color: var(--color-accent);
+}
+</style>

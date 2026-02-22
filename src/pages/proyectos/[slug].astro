@@ -1,0 +1,610 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import { imageUrlFor } from '../../lib/imageUrlFor';
+import {sanityClient } from '../../lib/sanity';
+import { PortableText } from "astro-portabletext";
+
+const { slug } = Astro.params;
+
+// Busca el proyecto
+const queryProject = `*[_type == "proyecto" && slug.current == $slug][0]{
+  _id,
+  title,
+  location,
+  description,
+  date,
+  categories,
+  gallery,
+  videoUrl
+}`;
+
+const project = await sanityClient.fetch(queryProject, { slug });
+
+function getYoutubeEmbedUrl(url: string): string | undefined {
+  if (!url) return undefined;
+  const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = url.match(regExp);
+  const videoId = match ? match[1] : null;
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
+}
+const galleryData = project?.gallery?.map((image: any) => ({
+  thumb: imageUrlFor(image).width(400).url(),
+  full: imageUrlFor(image).width(1400).url(),
+  alt: image.alt || project.title
+})) || [];
+
+// Preparar variables para la plantilla
+const heroBgStyle = project?.gallery && project.gallery[0]
+  ? `background-image: url(${imageUrlFor(project.gallery[0]).width(1200).height(250).url()})`
+  : "background-color: var(--color-primary)";
+
+const pageTitle = project ? `${project.title} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
+---
+<BaseLayout title={pageTitle} description={project?.description ? project.description.slice(0, 150) : 'Detalles del proyecto de construcción'}>
+<div class="project-detail-page">
+  {!project ? (
+    <div class="container not-found">
+      <h2>Oops! no pudimos encontrar ese proyecto</h2>
+      <a href="/proyectos" class="btn btn-secondary">Volver a Proyectos</a>
+    </div>
+  ) : (
+    <div class="project-content">
+      <div class="hero-image" style={heroBgStyle}>
+        <div class="overlay">
+          <div class="container hero-text">
+            <h1 class="project-title">{project.title}</h1>
+            <p class="project-location">
+              <span class="icon">📍</span> {project.location}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="container content-section">
+        <div class="project-info">
+          <div class="main-info">
+            <SectionTitle title="Conoce acerca del Proyecto" align="left" />
+            
+            {project.description ? (
+              <div class="description">
+                <PortableText value={project.description} />
+              </div>
+            ) : (
+              <p class="description">Sin descripción disponible.</p>
+            )}
+
+            {project.gallery && project.gallery.length > 0 && (
+              <div class="gallery-placeholder">
+                <SectionTitle title="Galería" align="left" as="h3" fontSize="1.5rem" />
+                <div class="gallery-grid" id="gallery-grid">
+                  </div>
+              </div>
+            )}
+
+            {project.videoUrl && (
+              <div class="video-section">
+                <SectionTitle title="Video del Proyecto" align="left" as="h3" fontSize="1.5rem" />
+                <div class="video-container">
+                  <iframe 
+                    src={getYoutubeEmbedUrl(project.videoUrl)} 
+                    title="Video del proyecto" 
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen 
+                    loading="lazy">
+                  </iframe>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div class="sidebar">
+            <div class="info-card">
+              <h3>Detalles</h3>
+              <ul>
+                {project.location && (
+                  <li class="project-item-detail">
+                    <strong>Ubicación:</strong> <span class="value-detail">{project.location}</span>
+                  </li>
+                )}
+                {project.date && (
+                  <li class="project-item-detail">
+                    <strong>Fecha:</strong> <span class="value-detail">{project.date}</span>
+                  </li>
+                )}
+                {project.categories && project.categories.length > 0 && (
+                  <li class="project-item-detail">
+                    <strong>Categoría:</strong> 
+                    <span class="value-detail">
+                      {project.categories.map((c: string) => c.charAt(0).toUpperCase() + c.slice(1)).join(' / ')}
+                    </span>
+                  </li>
+                )}
+              </ul>
+              <a href="/contacto" class="btn btn-primary full-width">Estoy interesado</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {project?.gallery && project.gallery.length > 0 && (
+    <div id="lightbox" class="lightbox-overlay" style="display: none;">
+      <button id="lightbox-close" class="lightbox-close" aria-label="Cerrar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      {project.gallery.length > 1 && (
+        <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+      )}
+
+      <div class="lightbox-image-container">
+        <img id="lightbox-image" src="" alt="" class="lightbox-image" />
+      </div>
+
+      {project.gallery.length > 1 && (
+        <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Siguiente">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      )}
+
+      {project.gallery.length > 1 && (
+        <div id="lightbox-counter" class="lightbox-counter"></div>
+      )}
+    </div>
+  )}
+</div>
+</BaseLayout>
+
+<script define:vars={{ galleryData }}>
+  if (galleryData.length > 0) {
+    const galleryGrid = document.getElementById('gallery-grid');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-image');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    const btnClose = document.getElementById('lightbox-close');
+    const btnNext = document.getElementById('lightbox-next');
+    const btnPrev = document.getElementById('lightbox-prev');
+
+    let visibleLimit = window.innerWidth <= 768 ? 3 : 6;
+    let lightboxIndex = 0;
+    let touchStartX = 0;
+
+    const renderGallery = () => {
+      if (!galleryGrid) return;
+      galleryGrid.innerHTML = '';
+      
+      const toShow = galleryData.slice(0, visibleLimit);
+      
+      toShow.forEach((image, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'gallery-item-wrapper';
+        wrapper.onclick = () => openLightbox(index);
+
+        const img = document.createElement('img');
+        // Usamos la URL que ya calculamos en el servidor
+        img.src = image.thumb; 
+        img.alt = image.alt;
+        img.loading = 'lazy';
+        img.className = 'gallery-thumb';
+        wrapper.appendChild(img);
+
+        if (index === visibleLimit - 1 && galleryData.length > visibleLimit) {
+          const overlay = document.createElement('div');
+          overlay.className = 'more-images-overlay';
+          overlay.innerHTML = `<span>+${galleryData.length - visibleLimit}</span>`;
+          wrapper.appendChild(overlay);
+        }
+
+        galleryGrid.appendChild(wrapper);
+      });
+    };
+
+    window.addEventListener('resize', () => {
+      const newLimit = window.innerWidth <= 768 ? 3 : 6;
+      if (newLimit !== visibleLimit) {
+        visibleLimit = newLimit;
+        renderGallery();
+      }
+    });
+
+    const openLightbox = (index) => {
+      lightboxIndex = index;
+      updateLightboxContent();
+      lightbox.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+      lightbox.style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    const nextImage = () => {
+      lightboxIndex = (lightboxIndex + 1) % galleryData.length;
+      updateLightboxContent();
+    };
+
+    const prevImage = () => {
+      lightboxIndex = (lightboxIndex - 1 + galleryData.length) % galleryData.length;
+      updateLightboxContent();
+    };
+
+    const updateLightboxContent = () => {
+      if(lightboxImg) {
+        // Usamos la versión de alta resolución calculada en el servidor
+        lightboxImg.src = galleryData[lightboxIndex].full;
+        lightboxImg.alt = galleryData[lightboxIndex].alt;
+      }
+      if(lightboxCounter) {
+        lightboxCounter.textContent = `${lightboxIndex + 1} / ${galleryData.length}`;
+      }
+    };
+
+    if (btnClose) btnClose.onclick = closeLightbox;
+    if (btnNext) btnNext.onclick = (e) => { e.stopPropagation(); nextImage(); };
+    if (btnPrev) btnPrev.onclick = (e) => { e.stopPropagation(); prevImage(); };
+    
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    lightbox?.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox?.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) nextImage();
+        else prevImage();
+      }
+    }, { passive: true });
+
+    window.addEventListener('keydown', (e) => {
+      if (lightbox?.style.display !== 'none') {
+        if (e.key === 'ArrowRight') nextImage();
+        else if (e.key === 'ArrowLeft') prevImage();
+        else if (e.key === 'Escape') closeLightbox();
+      }
+    });
+
+    renderGallery();
+  }
+</script>
+
+<style>
+  /* Todos los estilos permanecen casi idénticos, Astro aplica el 'scoped' por defecto */
+  .hero-image {
+    height: 60vh;
+    min-height: 200px;
+    max-height: 250px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+
+  .project-info-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+  }
+
+  .label {
+    white-space: nowrap;
+    color: #333;
+  }
+
+  .value-detail {
+    text-align: right;
+    color: #666;
+  }
+
+  .overlay {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 4rem;
+  }
+
+  .project-title {
+    color: var(--color-white);
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-location {
+    color: var(--color-light);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .content-section {
+    padding: 4rem 1rem;
+  }
+
+  .project-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    color: var(--color-text);
+  }
+
+  /* Remplazando el :deep() de Vue por :global() en Astro */
+  .description :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .video-section {
+    margin: 3rem 0;
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* Modificadores agregados vía JS mantendrán estos estilos globales */
+  :global(.gallery-item-wrapper) {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  :global(.gallery-item-wrapper:hover) {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  :global(.gallery-thumb) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  :global(.more-images-overlay) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  .info-card {
+    background-color: var(--color-background, #fff);
+    padding: 2rem;
+    border-radius: 8px;
+    position: sticky;
+    top: 100px;
+  }
+
+  .info-card h3 {
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-accent);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+
+  .info-card ul {
+    list-style: none;
+    margin-bottom: 2rem;
+    padding: 0;
+  }
+
+  .info-card li {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 0.5rem;
+  }
+
+  .full-width {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .not-found {
+    padding: 5rem 1rem;
+    text-align: center;
+  }
+
+  /* ── Lightbox ── */
+  .lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    z-index: 10001;
+    padding: 0.5rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .lightbox-close:hover {
+    opacity: 1;
+  }
+
+  .lightbox-image-container {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 1rem 0.75rem;
+    border-radius: 4px;
+    z-index: 10001;
+    opacity: 0.7;
+    transition: opacity 0.2s, background 0.2s;
+  }
+
+  .lightbox-nav:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .lightbox-prev {
+    left: 1rem;
+  }
+
+  .lightbox-next {
+    right: 1rem;
+  }
+
+  .lightbox-counter {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .project-info {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .sidebar {
+      order: -1;
+    }
+
+    .info-card {
+      position: static;
+      padding: 1.5rem;
+    }
+
+    .info-card li {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .project-title {
+      font-size: 2rem;
+    }
+
+    .content-section {
+      padding: 2rem 1rem;
+    }
+
+    .lightbox-nav {
+      padding: 0.75rem 0.5rem;
+    }
+
+    .lightbox-prev {
+      left: 0.5rem;
+    }
+
+    .lightbox-next {
+      right: 0.5rem;
+    }
+
+    .lightbox-image-container {
+      max-width: 95vw;
+    }
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+import SectionTitle from '../components/SectionTitle.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Servicios | Construcciones Juan Pablo II";
+const description = "Ofrecemos servicios de Obra Civil, Remodelaciones y Diseño Arquitectónico en San Carlos y el Oriente Antioqueño.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="services-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Nuestros Servicios</h1>
+        <p class="page-subtitle">Soluciones profesionales para cada etapa de tu proyecto.</p>
+      </div>
+    </div>
+
+    <section id="obra-civil" class="service-detail">
+      <div class="container">
+        <div class="service-detail-inner">
+          <div class="service-icon-col">
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9" />
+                <path d="M17.64 15 22 10.64" />
+                <path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25V4.5c0-.83-.67-1.5-1.5-1.5H13.5c-.83 0-1.5.67-1.5 1.5v3.7c0 .85-.33 1.65-.93 2.25L9.83 11.74" />
+              </svg>
+            </div>
+          </div>
+          <div class="service-text-col">
+            <SectionTitle title="Obra Civil" align="left" />
+            <p class="service-lead">
+              Ejecutamos proyectos de construcción desde cero con los más altos estándares de calidad.
+              <strong class="highlight-text">Trae tus planos o usa uno de los nuestros</strong> — nos adaptamos a tu
+              visión y presupuesto.
+            </p>
+            <ul class="feature-list">
+              <li><span class="feature-icon">✓</span> Construcción de viviendas unifamiliares y multifamiliares</li>
+              <li><span class="feature-icon">✓</span> Edificaciones comerciales e institucionales</li>
+              <li><span class="feature-icon">✓</span> Cimentaciones, estructuras y acabados completos</li>
+              <li><span class="feature-icon">✓</span> Cumplimiento de normativa sismorresistente (NSR-10)</li>
+              <li><span class="feature-icon">✓</span> Obras de infraestructura vial y urbanística</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="remodelacion" class="service-detail alt-bg">
+      <div class="container">
+        <div class="service-detail-inner reverse">
+          <div class="service-icon-col">
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="16" height="6" x="2" y="2" rx="2" />
+                <path d="M10 16v-2a2 2 0 0 1 2-2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                <rect width="4" height="12" x="8" y="10" rx="1" />
+              </svg>
+            </div>
+          </div>
+          <div class="service-text-col">
+            <SectionTitle title="Mejoramiento de Vivienda y Remodelación" align="left" />
+            <p class="service-lead">
+              Transformamos espacios existentes para adaptarlos a tus nuevas necesidades y estilo de vida.
+              Dale nueva vida a tu hogar con remodelaciones que combinan funcionalidad y estética moderna.
+            </p>
+            <ul class="feature-list">
+              <li><span class="feature-icon">✓</span> Ampliaciones y mejoramiento de espacios existentes</li>
+              <li><span class="feature-icon">✓</span> Modernización de cocinas, baños y fachadas</li>
+              <li><span class="feature-icon">✓</span> Reparaciones estructurales y reforzamiento</li>
+              <li><span class="feature-icon">✓</span> Acabados en pisos, pintura y enchapes</li>
+              <li><span class="feature-icon">✓</span> Asesoría personalizada para transformar tu hogar</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="diseno-arquitectonico" class="service-detail">
+      <div class="container">
+        <div class="service-detail-inner">
+          <div class="service-icon-col">
+            <div class="icon-circle">
+              <svg fill="none" width="48" height="48" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                stroke="currentColor" stroke-width="2">
+                <path d="M53.5,17h-9.5v-2.5c0-.8271-.6729-1.5-1.5-1.5h-1.5v-1.5c0-.8271-.6729-1.5-1.5-1.5s-1.5,.6729-1.5,1.5v1.5h-1.5c-.8271,0-1.5,.6729-1.5,1.5v2.5H19v-3.3965c0-.2549-.1914-.4688-.4443-.4971-.27-.0293-6.6582-.7188-9.3521,1.6904-.7988,.7139-1.2036,1.623-1.2036,2.7031v29.2373c0,1.0957,.2021,2.0967,.6011,2.9756,.5054,1.1143,1.2388,1.9668,2.1807,2.5342,1.6851,1.6143,5.8179,1.7598,7.2471,1.7598,.2754,0,.4507-.0059,.4883-.0068H53.5c1.3789,0,2.5-1.1211,2.5-2.5V19.5c0-1.3789-1.1211-2.5-2.5-2.5Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="service-text-col">
+            <SectionTitle title="Diseño Arquitectónico" align="left" />
+            <p class="service-lead">
+              Creamos espacios funcionales y estéticamente atractivos, adaptados al entorno y a tus necesidades.
+              Desde la idea inicial hasta los planos definitivos, te acompañamos en todo el proceso creativo.
+            </p>
+            <ul class="feature-list">
+              <li><span class="feature-icon">✓</span> Diseño de planos arquitectónicos y estructurales</li>
+              <li><span class="feature-icon">✓</span> Renders 3D y visualización de proyectos</li>
+              <li><span class="feature-icon">✓</span> Tramitación de licencias de construcción</li>
+              <li><span class="feature-icon">✓</span> Diseño adaptado al clima del Oriente Antioqueño</li>
+              <li><span class="feature-icon">✓</span> Optimización de espacios y distribución funcional</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container">
+        <h2 class="cta-text">¿Tienes un proyecto en mente? Hablemos.</h2>
+        <a href="/contacto" class="btn btn-primary btn-large">Solicita tu Cotización</a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+/* Los estilos se mantienen exactamente iguales a tu original */
+.page-header {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 4rem 0;
+  text-align: center;
+}
+.page-title { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--color-white); }
+.page-subtitle { font-size: 1.1rem; color: var(--color-light); }
+
+.service-detail { padding: 5rem 1rem; scroll-margin-top: 80px; }
+.service-detail.alt-bg { background-color: var(--color-background); }
+.service-detail-inner { display: flex; align-items: flex-start; gap: 3rem; }
+.service-detail-inner.reverse { flex-direction: row-reverse; }
+
+.icon-circle {
+  width: 96px; height: 96px; border-radius: 50%;
+  background-color: var(--color-light); color: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.service-detail:hover .icon-circle { transform: scale(1.05); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); }
+
+.service-lead { font-size: 1.1rem; line-height: 1.8; color: var(--color-secondary); margin-bottom: 2rem; }
+.highlight-text { color: var(--color-accent); font-weight: 700; }
+
+.feature-list { list-style: none; padding: 0; display: grid; gap: 0.75rem; }
+.feature-list li { display: flex; align-items: flex-start; gap: 0.75rem; color: var(--color-text); line-height: 1.6; }
+.feature-icon { color: var(--color-accent); font-weight: 700; margin-top: 2px; }
+
+.cta-banner { padding: 5rem 1rem; background-color: var(--color-accent); text-align: center; color: var(--color-white); }
+.cta-text { font-size: 2rem; margin-bottom: 2rem; max-width: 700px; margin: 0 auto 2rem; }
+
+.btn-large {
+  display: inline-block; padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 50px;
+  background-color: var(--color-white); color: var(--color-accent);
+  text-decoration: none; font-weight: 700; border: 2px solid var(--color-white);
+}
+.btn-large:hover { background-color: transparent; color: var(--color-white); }
+
+@media (max-width: 768px) {
+  .service-detail-inner, .service-detail-inner.reverse { flex-direction: column; align-items: center; text-align: center; }
+  .feature-list li { justify-content: center; }
+  .cta-text { font-size: 1.5rem; }
+}
+</style>

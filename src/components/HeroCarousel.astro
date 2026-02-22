@@ -1,0 +1,194 @@
+---
+const slides = [
+  {
+    id: 1,
+    title: 'Construyendo el Futuro del Oriente Antioqueño',
+    subtitle: 'Calidad, innovación y sostenibilidad en cada proyecto.',
+    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop',
+    link: '/contacto',
+    buttonText: 'Contáctanos'
+  },
+  {
+    id: 2,
+    title: 'Expertos en Obra Civil y Remodelaciones',
+    subtitle: 'Transformamos espacios para mejorar tu calidad de vida.',
+    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1631&auto=format&fit=crop',
+    link: '/servicios',
+    buttonText: 'Nuestros Servicios'
+  },
+  {
+    id: 3,
+    title: 'Diseño Arquitectónico a tu Medida',
+    subtitle: 'Hacemos realidad la casa de tus sueños.',
+    image: '/planos.jpg',
+    link: '/proyectos',
+    buttonText: 'Ver Proyectos'
+  }
+];
+---
+
+<div class="hero-carousel" id="hero-carousel">
+  <div class="carousel-inner">
+    {slides.map((slide, index) => (
+      <div 
+        class={`slide ${index === 0 ? 'active' : ''}`}
+        data-index={index}
+        style={{ backgroundImage: `linear-gradient(rgba(43, 61, 65, 0.6), rgba(43, 61, 65, 0.6)), url(${slide.image})` }}
+      >
+        <div class="container slide-content">
+          <h1 class="slide-title">{slide.title}</h1>
+          <p class="slide-subtitle">{slide.subtitle}</p>
+          <a href={slide.link} class="btn btn-primary">{slide.buttonText}</a>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="carousel-controls">
+    {slides.map((_, index) => (
+      <button 
+        class={`control-dot ${index === 0 ? 'active' : ''}`}
+        data-go={index}
+        aria-label={`Ir a diapositiva ${index + 1}`}
+      ></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  const initHero = () => {
+    const carousel = document.querySelector('#hero-carousel');
+    if (!carousel) return;
+
+    const slides = carousel.querySelectorAll('.slide');
+    const dots = carousel.querySelectorAll('.control-dot');
+    let current = 0;
+    let interval: any;
+
+    const changeSlide = (nextIndex: number) => {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      
+      current = nextIndex;
+      
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    };
+
+    const autoPlay = () => {
+      const next = (current + 1) % slides.length;
+      changeSlide(next);
+    };
+
+    // Eventos de los puntos (dots)
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        clearInterval(interval);
+        changeSlide(idx);
+        startInterval();
+      });
+    });
+
+    const startInterval = () => {
+      interval = setInterval(autoPlay, 5000);
+    };
+
+    startInterval();
+  };
+
+  // Inicialización compatible con ViewTransitions
+  initHero();
+  document.addEventListener('astro:page-load', initHero);
+</script>
+
+<style>
+.hero-carousel {
+  position: relative;
+  height: 80vh;
+  min-height: 500px;
+  overflow: hidden;
+  background-color: var(--color-primary);
+}
+
+.carousel-inner {
+  height: 100%;
+  width: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Reemplazo de TransitionGroup fade */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease, visibility 1s;
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.slide-content {
+  text-align: center;
+  color: white;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+.slide-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--color-white);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slide-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.carousel-controls {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.control-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-dot.active {
+  background-color: var(--color-accent);
+  transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .slide-title {
+    font-size: 2.2rem;
+  }
+}
+</style>

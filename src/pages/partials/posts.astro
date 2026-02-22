@@ -1,0 +1,47 @@
+---
+// src/pages/partials/posts.astro
+export const partial = true;
+
+import type { Post } from '../../../types/sanity';
+import PostCard from '../../components/PostCard.astro';
+import { sanityClient } from '../../lib/sanity';
+
+const lastDateParam = Astro.url.searchParams.get('lastDate');
+const lastIdParam = Astro.url.searchParams.get('lastId');
+const limit = 6;
+
+const query = `*[_type == "publicacion" && defined(slug.current) && (
+  fechaPublicacion < $lastDate || 
+  (fechaPublicacion == $lastDate && _id < $lastId)
+)] | order(fechaPublicacion desc, _id desc) [0...${limit}] {
+  _id,
+  titulo,
+  slug,
+  fechaPublicacion,
+  imagen,
+  extracto
+}`;
+
+const newPosts = await sanityClient.fetch(query, { 
+    lastDate: lastDateParam, 
+    lastId: lastIdParam 
+});
+
+// 1. Extraer los datos del último post para los nuevos cursores
+const lastItem = newPosts[newPosts.length - 1];
+
+// 2. Configurar headers para pasar la info al cliente sin ensuciar el HTML
+if (lastItem) {
+    Astro.response.headers.set('x-last-date', lastItem.fechaPublicacion);
+    Astro.response.headers.set('x-last-id', lastItem._id);
+}
+
+// 3. Indicar si se llegó al final
+if (newPosts.length < limit) {
+    Astro.response.headers.set('x-has-more', 'false');
+}
+---
+
+{newPosts.map((post: Post) => (
+  <PostCard post={post} />
+))}

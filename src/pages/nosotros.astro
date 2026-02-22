@@ -1,0 +1,145 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+import { myCompanyInfo } from "../lib/mockData.ts";
+const companyInfo = myCompanyInfo;
+
+const title = "Nosotros | Construcciones Juan Pablo II";
+const description = "Conoce la historia, misión y visión de Construcciones Juan Pablo II S.A.S. Expertos en construcción en el Oriente Antioqueño.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="about-page">
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Nosotros</h1>
+        <p class="page-subtitle">Construyendo confianza y calidad en cada obra.</p>
+      </div>
+    </div>
+
+    <section class="container content-section">
+      <div class="two-column">
+        <div class="text-content">
+          <h2 class="section-heading">Nuestra Historia</h2>
+          <p>
+            {companyInfo.description}
+          </p>
+          <p>
+            Fundada en el corazón del Oriente Antioqueño, <span class="color-accent">Construcciones Juan Pablo II
+              S.A.S.</span> nació con la visión de elevar los estándares de construcción en la región. A lo largo de los
+            años, hemos participado en numerosos proyectos residenciales, comerciales e institucionales, siempre
+            priorizando la satisfacción de nuestros clientes y el respeto por el entorno.
+          </p>
+        </div>
+        <div class="image-content">
+          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
+            alt="Proyecto en construcción" class="about-image" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <section class="mission-vision-section">
+      <div class="container two-column reverse-mobile">
+        <div class="image-content">
+          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
+            alt="Proyecto en construcción" class="about-image" loading="lazy">
+        </div>
+        <div class="text-content">
+          <h2 class="section-heading">Misión y Visión</h2>
+          <div class="mv-block">
+            <h3>Misión</h3>
+            <p>Brindar soluciones integrales en construcción y diseño, superando las expectativas de nuestros clientes
+              mediante la innovación, la calidad y el cumplimiento de los plazos, contribuyendo al desarrollo de nuestra
+              comunidad.</p>
+          </div>
+          <div class="mv-block">
+            <h3>Visión</h3>
+            <p>Ser reconocidos como la empresa constructora líder en el Oriente Antioqueño, destacándonos por nuestra
+              excelencia técnica, ética profesional y compromiso con la sostenibilidad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+/* Los estilos se mantienen casi idénticos */
+.page-header {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-white);
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-light);
+}
+
+.content-section {
+  padding: 5rem 1rem;
+}
+
+.mission-vision-section {
+  background-color: var(--color-background);
+  padding: 5rem 1rem;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-image {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.section-heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+
+.text-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.mv-block {
+  margin-bottom: 2rem;
+}
+
+.mv-block h3 {
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+.color-accent {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .two-column {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .reverse-mobile {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+</style>

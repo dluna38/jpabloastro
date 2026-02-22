@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { sanityClient } from '../../lib/sanity';
+import type { Proyecto } from '../../../types/sanity';
+import { imageUrlFor } from '../../lib/imageUrlFor';
+
+const LIMIT = 3;
+
+// Consulta optimizada: Trae los items y el total en una sola petición a Sanity
+const queryInitial = `{
+  "items": *[_type == "proyecto"] | order(fechaPublicacion desc, _id desc) [0...${LIMIT}] {
+    _id,
+    title,
+    slug,
+    location,
+    gallery,
+    fechaPublicacion
+  },
+  "total": count(*[_type == "proyecto"])
+}`;
+
+const { items: projects, total } = await sanityClient.fetch(queryInitial);
+const lastItem = projects[projects.length - 1];
+
+// Calculamos si hay más proyectos por cargar basándonos en el total real
+const hasMoreInitial = projects.length < total;
+---
+
+<BaseLayout 
+  title="Proyectos | Construcciones Juan Pablo II"
+  description="Galería de proyectos de construcción y remodelación realizados por Construcciones Juan Pablo II S.A.S."
+>
+  <div class="projects-page">
+    <div class="page-header">
+      <div class="container">
+        <SectionTitle title="Nuestros Proyectos" color="var(--color-white)" />
+        <p class="page-subtitle">Explora nuestros proyectos actuales y nuevos lanzamientos.</p>
+      </div>
+    </div>
+
+    <section class="container content-section">
+      <div id="projects-grid" class="projects-grid">
+        {projects.map((project: Proyecto) => (
+          <ProjectCard 
+            title={project.title} 
+            slug={project.slug.current}
+            location={project.location}
+            imageUrl={project.gallery && project.gallery[0] ? imageUrlFor(project.gallery[0]).width(600).height(400).url() : undefined}
+          />
+        ))}
+      </div>
+
+      {projects.length === 0 && (
+        <div class="no-projects">
+          <p>Próximamente encontrarás todos nuestros proyectos aquí.</p>
+        </div>
+      )}
+
+      {/* Renderizamos el botón solo si el total de proyectos es mayor a los que ya mostramos */}
+      {hasMoreInitial && (
+        <div class="pagination-controls">
+          <button 
+            id="load-more-btn" 
+            class="btn btn-secondary load-more-btn"
+            data-last-date={lastItem?.fechaPublicacion}
+            data-last-id={lastItem?._id}
+          >
+            Cargar más
+          </button>
+        </div>
+      )}
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const setupPagination = () => {
+    const btn = document.getElementById('load-more-btn') as HTMLButtonElement | null;
+    const grid = document.getElementById('projects-grid');
+    if (!btn || !grid) return;
+
+    btn.addEventListener('click', async () => {
+      const lastDate = btn.getAttribute('data-last-date');
+      const lastId = btn.getAttribute('data-last-id');
+
+      if (!lastDate || !lastId) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Cargando...';
+
+      try {
+        const response = await fetch(`/partials/projects?lastDate=${lastDate}&lastId=${lastId}`);
+        const html = await response.text();
+
+        if (html.trim().length > 0) {
+          grid.insertAdjacentHTML('beforeend', html);
+
+          const newDate = response.headers.get('x-last-date');
+          const newId = response.headers.get('x-last-id');
+          const hasMore = response.headers.get('x-has-more');
+
+          if (newDate && newId) {
+            btn.setAttribute('data-last-date', newDate);
+            btn.setAttribute('data-last-id', newId);
+          }
+          
+          // Si el header dice que no hay más, removemos el botón
+          if (hasMore === 'false') {
+            btn.closest('.pagination-controls')?.remove();
+          }
+        } else {
+          btn.closest('.pagination-controls')?.remove();
+        }
+      } catch (e) {
+        console.error('Error cargando más proyectos:', e);
+      } finally {
+        if (document.body.contains(btn)) {
+          btn.disabled = false;
+          btn.innerText = 'Cargar más';
+        }
+      }
+    });
+  };
+
+  setupPagination();
+  document.addEventListener('astro:page-load', setupPagination);
+</script>
+
+<style>
+  .page-header {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 4rem 0;
+    text-align: center;
+  }
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-light);
+    margin-top: 1rem;
+  }
+  .content-section { padding: 5rem 1rem; }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+  .pagination-controls { text-align: center; margin-top: 4rem; }
+  .load-more-btn { padding: 0.75rem 2.5rem; font-size: 1.1rem; }
+  .no-projects { text-align: center; padding: 3rem; font-style: italic; }
+</style>

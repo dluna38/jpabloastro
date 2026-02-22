@@ -1,0 +1,98 @@
+---
+import SectionTitle from './SectionTitle.astro';
+import ProjectCard from './ProjectCard.astro';
+import { sanityClient, imageUrlFor } from '../lib/sanity';
+import type { Project } from '../../types/sanity';
+
+// 1. Fetch de datos en el servidor
+const projectsQuery = `*[_type == "proyecto"] | order(date desc) [0...3] {
+  _id, 
+  title, 
+  slug, 
+  location, 
+  gallery
+}`;
+
+let projects = [];
+try {
+  projects = await sanityClient.fetch(projectsQuery);
+} catch (error) {
+  console.error("Error cargando proyectos:", error);
+}
+
+const hasProjects = projects && projects.length > 0;
+---
+
+<section class="projects-section">
+  <div class="container">
+    <SectionTitle title="Proyectos Destacados" align="left" />
+
+    {!hasProjects ? (
+      <div class="no-projects">
+        <p>Próximamente publicaremos nuestros proyectos.</p>
+      </div>
+    ) : (
+      <div class="projects-grid">
+        {projects.map((project: Project) => (
+          <ProjectCard 
+            title={project.title}
+            slug={project.slug.current}
+            location={project.location}
+            imageUrl={
+              project.gallery && project.gallery[0] 
+                ? imageUrlFor(project.gallery[0]).width(600).height(400).url() 
+                : undefined
+            }
+          />
+        ))}
+      </div>
+    )}
+
+    {hasProjects && (
+      <div class="center-btn">
+        <a href="/proyectos" class="btn btn-secondary">
+          Ver todos nuestros proyectos
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .projects-section {
+    padding: 2rem 1rem;
+    background-color: var(--color-white);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .no-projects {
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-secondary);
+  }
+
+  .center-btn {
+    text-align: center;
+  }
+
+  @media (max-width: 1100px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+</style>

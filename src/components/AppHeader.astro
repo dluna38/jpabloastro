@@ -6,77 +6,86 @@ import logoSolo from "../assets/logo_solo.png";
 ---
 
 <header class="header">
-  <div class="container header-container">
-    <div class="logo">
-      <a href="/" class="link">
-        <Image
-          src={logoMain}
-          alt="Logo Construcciones Juan Pablo II  S.A.S."
-          class="logo-image logo-desktop"
-        />
-        <Image
-          src={logoSolo}
-          alt="Logo Construcciones Juan Pablo II  S.A.S."
-          class="logo-image logo-mobile"
-        />
-      </a>
+    <div class="container header-container">
+        <div class="logo">
+            <a href="/" class="link">
+                <Image
+                    loading="eager"
+                    fetchpriority="high"
+                    src={logoMain}
+                    alt="Logo Construcciones Juan Pablo II  S.A.S."
+                    class="logo-image logo-desktop"
+                />
+                <Image
+                    loading="eager"
+                    fetchpriority="high"
+                    src={logoSolo}
+                    alt="Logo Construcciones Juan Pablo II  S.A.S."
+                    class="logo-image logo-mobile"
+                />
+            </a>
+        </div>
+
+        <button
+            id="menu-toggle"
+            class="mobile-menu-btn"
+            aria-label="Toggle menu"
+            aria-expanded="false"
+        >
+            <span class="hamburger"></span>
+        </button>
+
+        <nav id="nav-menu" class="nav">
+            <ul class="nav-list">
+                <li><a href="/" class="nav-link">Inicio</a></li>
+                <li><a href="/nosotros" class="nav-link">Nosotros</a></li>
+                <li><a href="/proyectos" class="nav-link">Proyectos</a></li>
+                <li><a href="/servicios" class="nav-link">Servicios</a></li>
+                <li><a href="/blog" class="nav-link">Blog</a></li>
+                <li>
+                    <a href="/contacto" class="nav-link btn-contact"
+                        >Contacto</a>
+                </li>
+            </ul>
+        </nav>
     </div>
-
-    <button
-      id="menu-toggle"
-      class="mobile-menu-btn"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-    >
-      <span class="hamburger"></span>
-    </button>
-
-    <nav id="nav-menu" class="nav">
-      <ul class="nav-list">
-        <li><a href="/" class="nav-link">Inicio</a></li>
-        <li><a href="/nosotros" class="nav-link">Nosotros</a></li>
-        <li><a href="/proyectos" class="nav-link">Proyectos</a></li>
-        <li><a href="/servicios" class="nav-link">Servicios</a></li>
-        <li><a href="/blog" class="nav-link">Blog</a></li>
-        <li><a href="/contacto" class="nav-link btn-contact">Contacto</a></li>
-      </ul>
-    </nav>
-  </div>
 </header>
 
 <script>
-  const initHeader = () => {
-    const btn = document.getElementById('menu-toggle');
-    const nav = document.getElementById('nav-menu');
-    const links = document.querySelectorAll('.nav-link');
+    const initHeader = () => {
+        const btn = document.getElementById("menu-toggle");
+        const nav = document.getElementById("nav-menu");
+        const links = document.querySelectorAll(".nav-link");
 
-    const toggleMenu = (forceClose = false) => {
-      const isOpening = forceClose ? false : !nav?.classList.contains('is-open');
-      
-      btn?.classList.toggle('is-active', isOpening);
-      nav?.classList.toggle('is-open', isOpening);
-      btn?.setAttribute('aria-expanded', isOpening.toString());
-      
-      // Equivalente al watch de Vue: Bloquear scroll
-      document.body.style.overflow = isOpening ? 'hidden' : '';
+        const toggleMenu = (forceClose = false) => {
+            const isOpening = forceClose
+                ? false
+                : !nav?.classList.contains("is-open");
+
+            btn?.classList.toggle("is-active", isOpening);
+            nav?.classList.toggle("is-open", isOpening);
+            btn?.setAttribute("aria-expanded", isOpening.toString());
+
+            // Equivalente al watch de Vue: Bloquear scroll
+            document.body.style.overflow = isOpening ? "hidden" : "";
+        };
+
+        btn?.addEventListener("click", () => toggleMenu());
+
+        // Cerrar al hacer clic en cualquier enlace (Equivalente al @click en los links)
+        links.forEach((link) => {
+            link.addEventListener("click", () => toggleMenu(true));
+        });
     };
 
-    btn?.addEventListener('click', () => toggleMenu());
-
-    // Cerrar al hacer clic en cualquier enlace (Equivalente al @click en los links)
-    links.forEach(link => {
-      link.addEventListener('click', () => toggleMenu(true));
-    });
-  };
-
-  // Se ejecuta al cargar la página y después de cada navegación de Astro
-  initHeader();
-  document.addEventListener('astro:page-load', initHeader);
+    // Se ejecuta al cargar la página y después de cada navegación de Astro
+    initHeader();
+    document.addEventListener("astro:page-load", initHeader);
 </script>
 
 <style>
-  /* Aquí puedes pegar tus estilos CSS originales */
-  /* Asegúrate de que las clases .is-active y .is-open tengan sus estilos correspondientes */
+    /* Aquí puedes pegar tus estilos CSS originales */
+    /* Asegúrate de que las clases .is-active y .is-open tengan sus estilos correspondientes */
 </style>
 
 <style>

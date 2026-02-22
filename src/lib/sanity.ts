@@ -1,9 +1,10 @@
 import { createClient } from '@sanity/client';
 import {createImageUrlBuilder} from '@sanity/image-url';
+import {getSecret} from 'astro:env/server';
 
 export const sanityClient = createClient({
-  projectId: 'tk84jgoc', // Reemplaza con tu ID de Sanity
-  dataset: 'production', // Reemplaza con tu dataset
+  projectId: getSecret('SANITY_PROJECT_ID'), // Reemplaza con tu ID de Sanity
+  dataset: getSecret('SANITY_DATASET'), // Reemplaza con tu dataset
   apiVersion: '2024-03-01', // Usa la fecha actual para la versión de la API
   useCdn: true, // `false` si quieres datos frescos siempre (SSR)
 });

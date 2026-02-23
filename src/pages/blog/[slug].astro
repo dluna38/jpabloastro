@@ -1,14 +1,38 @@
 ---
-export const prerender = false;
+export const prerender = true;
+
+import type { Publicacion } from '../../../types/sanity';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import formatDateCustom from '../../lib/formatDateCustom';
 import { sanityClient, imageUrlFor } from '../../lib/sanity';
 import { PortableText } from "astro-portabletext";
 
-// 1. Obtener el slug de la URL
-const { slug } = Astro.params;
+export async function getStaticPaths() {
 
-// 2. Consulta a Sanity
+  const query = `*[_type == "publicacion"] {
+  _id,
+  titulo,
+  contenido,
+  slug,
+  fechaPublicacion,
+  imagen
+}`;
+  
+  const posts = await sanityClient.fetch(query);
+   if (!posts) {
+    console.warn("No se encontraron publicaciones para generar rutas.");
+    return [];
+  }
+
+  return posts.map((post: Publicacion) => ({
+    params: { slug: post.slug.current },
+    props: { post },
+  }));
+}
+
+
+/* const { slug } = Astro.params;
+
 const query = `*[_type == "publicacion" && slug.current == $slug][0] {
   _id,
   titulo,
@@ -17,18 +41,20 @@ const query = `*[_type == "publicacion" && slug.current == $slug][0] {
   fechaPublicacion,
   imagen
 }`;
-
 const post = await sanityClient.fetch(query, { slug });
 
 // 3. Si no existe el post, redirigir o manejar error
 if (!post) {
   return Astro.redirect('/404');
+} */
+interface Props {
+  post: Publicacion; 
 }
-
-const title = `${post.titulo} | Construcciones Juan Pablo II`;
+const { post } = Astro.props;
+const pageTitle = post ? `${post.titulo} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
 ---
 
-<BaseLayout title={title} description={post.titulo}>
+<BaseLayout title={pageTitle} description={post.titulo}>
   <div class="post-detail-page">
     <div class="post-header">
       <div class="container">

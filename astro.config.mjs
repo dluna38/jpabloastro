@@ -10,6 +10,7 @@ export default defineConfig({
   image: {
     domains: ['cdn.sanity.io'],
   },
-
-  adapter: cloudflare(),
+  adapter: cloudflare({
+     imageService: 'compile'
+  }),
 });

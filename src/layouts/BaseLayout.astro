@@ -1,7 +1,7 @@
 ---
+import '../styles/main.css';
 import AppHeader from "../components/AppHeader.astro";
 import AppFooter from "../components/AppFooter.astro";
-import '../styles/main.css';
 const { title, description,image,url } = Astro.props;
 
 ---
@@ -17,7 +17,7 @@ const { title, description,image,url } = Astro.props;
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image ?? `${Astro.site}/logo_full.webp`} />
+    <meta property="og:image" content={image ?? `${Astro.site}logo_full.webp`} />
     <meta property="og:url" content={url ?? Astro.url ?? ""} />
     <link rel="canonical" href={url ?? Astro.url ?? ""} />
   </head>

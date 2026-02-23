@@ -25,6 +25,7 @@ const { items: projects, total } = await sanityClient.fetch(queryInitial);
 const lastItem = projects[projects.length - 1];
 
 const hasMoreInitial = projects.length < total;
+
 ---
 
 <BaseLayout 
@@ -79,7 +80,6 @@ const hasMoreInitial = projects.length < total;
 <script>
   const btnLoadMore = document.getElementById('load-more-btn') as HTMLButtonElement | null;
   const grid = document.getElementById('projects-grid');
-  console.log(btnLoadMore?.dataset);
 
   let lastDateForServer=btnLoadMore?.dataset.lastdate;
   let lastIdForServer=btnLoadMore?.dataset.lastid;
@@ -93,8 +93,7 @@ const hasMoreInitial = projects.length < total;
     if (!btnLoadMore || !grid) return;
 
     btnLoadMore.addEventListener('click', async () => {
-      console.log('Attempting to load more projects');
-      
+
       if (!lastDateForServer || !lastIdForServer) return;
 
       btnLoadMore.disabled = true;

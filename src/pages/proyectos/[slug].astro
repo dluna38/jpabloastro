@@ -77,7 +77,8 @@ const heroBgStyle = project?.gallery && project.gallery[0]
 
 const pageTitle = project ? `${project.title} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
 ---
-<BaseLayout title={pageTitle} description={project?.description ? project.description.slice(0, 150) : 'Detalles del proyecto de construcción'}>
+<BaseLayout title={pageTitle} description={project?.description ? project.description.slice(0, 150) : 'Detalles del proyecto de construcción'
+} image={project?.gallery && project.gallery[0] ? imageUrlFor(project.gallery[0]).width(1200).height(630).url() : undefined} url={Astro.url}>
 <div class="project-detail-page">
   {!project ? (
     <div class="container not-found">

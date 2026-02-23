@@ -27,7 +27,7 @@ const hasMoreInitial = posts.length < total;
 
 <BaseLayout 
   title="Blog | Construcciones Juan Pablo II" 
-  description="Noticias, artículos y actualizaciones sobre el mundo de la construcción en el Oriente Antioqueño."
+  description="Noticias, artículos y actualizaciones sobre la Construcciones Juan Pablo II y el mundo de la construcción en el Oriente Antioqueño."
 >
   <div class="blog-page">
     <div class="page-header">
@@ -71,7 +71,6 @@ const hasMoreInitial = posts.length < total;
 <script>
   const btnLoadMore = document.getElementById('load-more-btn') as HTMLButtonElement | null;
   const grid = document.getElementById('posts-grid');
-  console.log(btnLoadMore?.dataset);
 
   let lastDateForServer=btnLoadMore?.dataset.lastdate;
   let lastIdForServer=btnLoadMore?.dataset.lastid;

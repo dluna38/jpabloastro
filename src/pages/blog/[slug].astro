@@ -52,9 +52,11 @@ interface Props {
 }
 const { post } = Astro.props;
 const pageTitle = post ? `${post.titulo} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
+
+const imageUrl = post?.imagen ? imageUrlFor(post.imagen).width(1200).height(600).url() : undefined;
 ---
 
-<BaseLayout title={pageTitle} description={post.titulo}>
+<BaseLayout title={pageTitle} description="Articulo sobre Construcciones Juan Pablo II" image={imageUrl} url={Astro.url}>
   <div class="post-detail-page">
     <div class="post-header">
       <div class="container">
@@ -69,7 +71,7 @@ const pageTitle = post ? `${post.titulo} | Construcciones Juan Pablo II` : 'Proy
       {post.imagen && (
         <div class="post-image-container">
           <img 
-            src={imageUrlFor(post.imagen).width(1200).height(600).url()} 
+            src={imageUrl} 
             alt={post.titulo} 
             class="main-image" 
           />

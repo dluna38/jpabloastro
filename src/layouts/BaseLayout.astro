@@ -2,7 +2,8 @@
 import AppHeader from "../components/AppHeader.astro";
 import AppFooter from "../components/AppFooter.astro";
 import '../styles/main.css';
-const { title } = Astro.props;
+const { title, description,image,url } = Astro.props;
+
 ---
 
 <html lang="es">
@@ -10,8 +11,15 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Empresa de construcción líder en el Oriente Antioqueño. Obra civil, remodelaciones y diseño arquitectónico." />
+    <meta name="description" content={description ?? "Empresa de construcción líder en el Oriente Antioqueño. Obra civil, remodelaciones y diseño arquitectónico."} />
     <title>{title}</title>
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image ?? `${Astro.site}/logo_full.webp`} />
+    <meta property="og:url" content={url ?? Astro.url ?? ""} />
+    <link rel="canonical" href={url ?? Astro.url ?? ""} />
   </head>
   <body>
     <!-- Wrap the slot element with your existing layout templating -->

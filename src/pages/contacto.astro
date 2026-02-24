@@ -5,13 +5,21 @@ import SectionTitle from '../components/SectionTitle.astro';
 import IconFacebook from '../components/icon/IconFacebook.astro';
 import IconInstagram from '../components/icon/IconInstagram.astro';
 import IconWhatsApp from '../components/icon/IconWhatsApp.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout, { type SEOProps } from '../layouts/BaseLayout.astro';
+import { myCompanyInfo } from '../lib/dataCompany';
 
 const pageTitle = "Contacto | Construcciones Juan Pablo II";
 const pageDescription = "Contáctanos para tus proyectos de construcción y remodelación en San Carlos, Antioquia. Cotiza hoy mismo.";
+
+
+const customSEO: SEOProps = {
+  title: pageTitle,
+  description: pageDescription,
+  url: Astro.url.href
+};
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} url={Astro.url}>
+<BaseLayout title={pageTitle} description={pageDescription} seo={customSEO}>
 <div class="contact-page">
   <div class="page-header">
     <div class="container">
@@ -33,14 +41,14 @@ const pageDescription = "Contáctanos para tus proyectos de construcción y remo
             <span class="icon">📍</span>
             <div>
               <strong>Dirección:</strong><br>
-              San Carlos, Antioquia
+              {myCompanyInfo.address}
             </div>
           </li>
           <li>
             <span class="icon">📞</span>
             <div>
               <strong>Teléfono:</strong><br>
-              <a href="tel:+573001234567">+57 300 123 4567</a>
+              <a href="tel:+573001234567">{myCompanyInfo.phone}</a>
             </div>
           </li>
           <li>
@@ -63,11 +71,11 @@ const pageDescription = "Contáctanos para tus proyectos de construcción y remo
         <div class="social-links">
           <SectionTitle title="Síguenos en nuestras redes sociales" align="left" as="h3" fontSize="1.5rem" />
           <div class="social-icons">
-            <a href="https://www.facebook.com/p/Construcciones-Juan-Pablo-SAS-100063824131059/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <a href={myCompanyInfo.socials.facebook?.url} aria-label="Facebook" target="_blank" rel="noopener noreferrer">
               <IconFacebook size={24}/>
               Facebook
             </a>
-            <a href="https://www.instagram.com/constructorahermida/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <a href={myCompanyInfo.socials.instagram?.url} aria-label="Instagram" target="_blank" rel="noopener noreferrer">
               <IconInstagram size={24}/>
               Instagram
             </a>

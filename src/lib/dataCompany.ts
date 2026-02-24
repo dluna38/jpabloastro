@@ -1,4 +1,31 @@
-import type { Service, CompanyInfo } from '../../types/sanity';
+
+export type SocialPlatform = 'instagram' | 'facebook' | 'linkedin' | 'twitter' | 'whatsapp' | 'youtube';
+
+export interface SocialLink {
+    platform: string; // El nombre legible (ej: 'Instagram')
+    url: string;      // El enlace real
+}
+
+export interface CompanyInfo {
+    _type: 'companyInfo';
+    name: string;
+    legalName: string;
+    description: string;
+    address: string;
+    phone: string;
+    email: string;
+    socials: Partial<Record<SocialPlatform, SocialLink>>;
+}
+
+export interface Service {
+    _id: string;
+    _type: 'service';
+    title: string;
+    description: string;
+    icon: string;
+}
+
+
 
 export const myCompanyInfo: CompanyInfo = {
     _type: 'companyInfo',
@@ -8,14 +35,10 @@ export const myCompanyInfo: CompanyInfo = {
     address: 'San Carlos, Antioquia, Colombia',
     phone: '+57 300 123 4567',
     email: 'contacto@construccionesjuanpabloii.com',
-    coordinates: {
-        lat: 6.188,
-        lng: -74.996
-    },
-    socials: [
-        { platform: 'Instagram', url: 'https://instagram.com' },
-        { platform: 'Facebook', url: 'https://facebook.com' }
-    ]
+    socials: {
+        instagram: { platform: 'instagram', url: 'https://instagram.com' },
+        facebook: { platform: 'facebook', url: 'https://facebook.com' },
+    }
 };
 
 export const mockServices: Service[] = [

@@ -1,14 +1,20 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout, { type SEOProps } from "../layouts/BaseLayout.astro";
 
-import { myCompanyInfo } from "../lib/mockData.ts";
+import { myCompanyInfo } from "../lib/dataCompany.ts";
 const companyInfo = myCompanyInfo;
 
 const title = "Nosotros | Construcciones Juan Pablo II";
 const description = "Conoce la historia, misión y visión de Construcciones Juan Pablo II S.A.S. Expertos en construcción en el Oriente Antioqueño.";
+
+const customSEO: SEOProps = {
+  title: title,
+  description: description,
+  url: Astro.url.href
+};
 ---
 
-<BaseLayout title={title} description={description} url={Astro.url}>
+<BaseLayout title={title} description={description} seo={customSEO}>
   <div class="about-page">
     <div class="page-header">
       <div class="container">

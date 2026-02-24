@@ -2,7 +2,7 @@
 import SectionTitle from './SectionTitle.astro';
 import PostCard from './PostCard.astro';
 import { sanityClient } from '../lib/sanity'; // O tu configuración de cliente Sanity
-import type { Post } from '../../types/sanity';
+import type { Publicacion as Post } from '../../types/sanity';
 
 // 1. Fetch de datos directo en el servidor
 const postsQuery = `*[
@@ -10,7 +10,8 @@ const postsQuery = `*[
     && defined(slug.current)
   ]|order(fechaPublicacion desc)[0...3]{titulo, slug, fechaPublicacion, imagen, extracto}`;
 
-let posts = [];
+let posts: any[] = [];
+
 try {
   posts = await sanityClient.fetch(postsQuery);
 } catch (error) {

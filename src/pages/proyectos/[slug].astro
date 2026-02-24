@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout, { type SEOProps } from '../../layouts/BaseLayout.astro';
 import SectionTitle from '../../components/SectionTitle.astro';
 import { imageUrlFor } from '../../lib/imageUrlFor';
 import {sanityClient } from '../../lib/sanity';
@@ -76,9 +76,37 @@ const heroBgStyle = project?.gallery && project.gallery[0]
   : "background-color: var(--color-primary)";
 
 const pageTitle = project ? `${project.title} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
+
+function blocksToText(blocks: any[] = []) {
+  return blocks
+    .map(block => {
+      if (block._type !== 'block' || !block.children) {
+        return '';
+      }
+      return block.children.map((child: any) => child.text).join('');
+    })
+    .join(' ');
+}
+
+const seoDescription = blocksToText(project?.description).slice(0, 150) + '...';
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Project",
+  "name": project?.title ,
+  "description": seoDescription
+};
+
+const customSEO: SEOProps = {
+  title: project?.title ? `${project.title} | Construcciones Juan Pablo II` : "Proyectos de Construcción en San Carlos",
+  description: seoDescription,
+  image: project?.gallery && project.gallery[0] ? imageUrlFor(project.gallery[0]).width(1200).height(630).url() : undefined,
+  twitterCard: "summary",
+  url: Astro.url.href
+};
+
+
 ---
-<BaseLayout title={pageTitle} description={project?.description ? project.description.slice(0, 150) : 'Detalles del proyecto de construcción'
-} image={project?.gallery && project.gallery[0] ? imageUrlFor(project.gallery[0]).width(1200).height(630).url() : undefined} url={Astro.url}>
+<BaseLayout title={pageTitle} schema={schema} seo={customSEO}>
 <div class="project-detail-page">
   {!project ? (
     <div class="container not-found">

@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import type { Publicacion } from '../../../types/sanity';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout, { type SEOProps } from '../../layouts/BaseLayout.astro';
 import formatDateCustom from '../../lib/formatDateCustom';
 import { sanityClient, imageUrlFor } from '../../lib/sanity';
 import { PortableText } from "astro-portabletext";
@@ -15,7 +15,8 @@ export async function getStaticPaths() {
   contenido,
   slug,
   fechaPublicacion,
-  imagen
+  imagen,
+  extracto
 }`;
   
   const posts = await sanityClient.fetch(query);
@@ -54,9 +55,42 @@ const { post } = Astro.props;
 const pageTitle = post ? `${post.titulo} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
 
 const imageUrl = post?.imagen ? imageUrlFor(post.imagen).width(1200).height(600).url() : undefined;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "name": post?.titulo ,
+  "headline": post?.titulo,
+  "description": post?.extracto || undefined,
+  "mainEntityOfPage": Astro.url,
+  "url": Astro.url,
+  "datePublished": post?.fechaPublicacion,
+  "isPartOf": {
+        "@type" : "Blog",
+         "@id": Astro.site+"/blog",
+         "name": "Construcciones Juan Pablo II Blog",
+     },
+  "image": {
+        "@type": "ImageObject",
+        "@id": imageUrl,
+        "url": imageUrl,
+        "height": "600",
+        "width": "1200"
+    },
+};
+
+const customSEO: SEOProps = {
+  title: post?.titulo ? `${post.titulo} | Construcciones Juan Pablo II` : "Proyectos de Construcción en San Carlos",
+  description: post?.extracto ? post.extracto.slice(0, 150) + '...' : "Descubre nuestros proyectos de vivienda en San Carlos, Antioquia. Construcciones Juan Pablo II S.A.S., expertos en calidad y diseño.",
+  image: imageUrl,
+  twitterCard: "summary",
+  url: Astro.url.href
+};
+
+
 ---
 
-<BaseLayout title={pageTitle} description="Articulo sobre Construcciones Juan Pablo II" image={imageUrl} url={Astro.url}>
+<BaseLayout title={pageTitle} seo={customSEO} schema={schema}>
   <div class="post-detail-page">
     <div class="post-header">
       <div class="container">

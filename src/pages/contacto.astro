@@ -47,7 +47,7 @@ const pageDescription = "Contáctanos para tus proyectos de construcción y remo
             <span class="icon">✉️</span>
             <div>
               <strong>Email:</strong><br>
-              <a href="mailto:info@construccionesjuanpabloii.com">info@construccionesjuanpabloii.com</a>
+              <span id="email"></span>
             </div>
           </li>
           <li>
@@ -141,6 +141,14 @@ const pageDescription = "Contáctanos para tus proyectos de construcción y remo
 
 
 <script>
+
+  const user = "info";
+  const domain = "construccionesjuanpabloii.com";
+  const emailElement = document.getElementById("email");
+  if (emailElement) {
+    emailElement.innerHTML = `<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
+  }
+
   const form = document.getElementById('whatsapp-form') as HTMLFormElement;
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
   const successMsg = document.getElementById('success-msg');

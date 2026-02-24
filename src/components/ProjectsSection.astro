@@ -2,10 +2,10 @@
 import SectionTitle from './SectionTitle.astro';
 import ProjectCard from './ProjectCard.astro';
 import { sanityClient, imageUrlFor } from '../lib/sanity';
-import type { Project } from '../../types/sanity';
+import type { Proyecto as Project } from '../../types/sanity';
 
 // 1. Fetch de datos en el servidor
-const projectsQuery = `*[_type == "proyecto"] | order(date desc) [0...3] {
+const projectsQuery = `*[_type == "proyecto"] | order(fechaPublicacion desc) [0...3] {
   _id, 
   title, 
   slug, 

@@ -2,8 +2,48 @@
 import '../styles/main.css';
 import AppHeader from "../components/AppHeader.astro";
 import AppFooter from "../components/AppFooter.astro";
-const { title, description,image,url } = Astro.props;
 
+export interface SEOProps {
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: 'website' | 'article' | 'profile';
+  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  seo?: SEOProps;
+  schema?: object;
+}
+
+const { title, description,seo,schema } = Astro.props;
+
+
+const siteName = "Construcciones Juan Pablo II S.A.S.";
+const canonicalURL = seo?.url ?? Astro.url.href;
+const defaultImage = `${Astro.site}logo_full.webp`;
+const metaDescription = description ?? seo?.description ?? "Construcciones Juan Pablo II S.A.S., empresa de construcción en San Carlos, Antioquia.";
+
+const BaseLayoutSchema = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "name": "Construcciones Juan Pablo II S.A.S.",
+  "url": `${Astro.site}`,
+  "logo": `${Astro.site}logo_full.webp`,
+  "email": "info@construccionesjuanpabloii.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "San Carlos",
+    "addressRegion": "Antioquia",
+    "addressCountry": "CO",
+    "areaServed": "Antioquia"
+  },
+  "telephone": "+57 3000000000"
+};
+const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
 ---
 
 <html lang="es">
@@ -11,15 +51,27 @@ const { title, description,image,url } = Astro.props;
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description ?? "Empresa de construcción líder en el Oriente Antioqueño. Obra civil, remodelaciones y diseño arquitectónico."} />
+    <meta name="description" content={seo?.description ?? description ??"Construcciones Juan Pablo II S.A.S., empresa de construcción en San Carlos, Antioquia. Expertos en viviendas, remodelaciones y obras civiles con altos estándares de calidad."} />
     <title>{title}</title>
 
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={image ?? `${Astro.site}logo_full.webp`} />
-    <meta property="og:url" content={url ?? Astro.url ?? ""} />
-    <link rel="canonical" href={url ?? Astro.url ?? ""} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta property="og:type" content={seo?.type ?? "website"} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={seo?.title ?? title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={seo?.image ?? defaultImage} />
+    <meta property="og:site_name" content={siteName} />
+
+    <meta property="twitter:card" content={seo?.twitterCard ?? defaultImage} />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={seo?.title ?? title} />
+    <meta property="twitter:description" content={metaDescription} />
+    <meta property="twitter:image" content={seo?.image ?? defaultImage} />
+
+      
+    <script type="application/ld+json" set:html={schemaString} />
   </head>
   <body>
     <!-- Wrap the slot element with your existing layout templating -->

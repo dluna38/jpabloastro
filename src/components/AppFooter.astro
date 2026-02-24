@@ -1,6 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import logoFull from "../assets/logo2_transparente.webp";
+import SectionTitle from "./SectionTitle.astro";
+import IconFacebook from "./icon/IconFacebook.astro";
+import IconInstagram from "./icon/IconInstagram.astro";
 
 const currentYear = new Date().getFullYear();
 ---
@@ -39,6 +42,7 @@ const currentYear = new Date().getFullYear();
 
       <div class="footer-section contact">
         <h4 class="footer-heading">Contacto</h4>
+        <div>
         <ul>
           <li>
             <strong>Dirección:</strong> San Carlos, Antioquia
@@ -50,6 +54,20 @@ const currentYear = new Date().getFullYear();
             <strong>Email:</strong> info@construccionesjuanpabloii.com
           </li>
         </ul>
+        <div class="social-links-footer">
+          <SectionTitle title="Síguenos en nuestras redes sociales" color="var(--color-accent)" align="center" as="h4" fontSize="1.1rem" margin="0 0 0.6rem 0"/>
+          <div class="social-icons-footer">
+            <a href="https://www.facebook.com/p/Construcciones-Juan-Pablo-SAS-100063824131059/" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              <IconFacebook size={24}/>
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/constructorahermida/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <IconInstagram size={24}/>
+              Instagram
+            </a>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -62,6 +80,17 @@ const currentYear = new Date().getFullYear();
 
 
   <style scoped>
+    .social-icons-footer{
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .social-icons-footer a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--color-light);
+    }
 .footer {
   background-color: var(--color-primary);
   color: var(--color-white);

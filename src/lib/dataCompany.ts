@@ -38,6 +38,8 @@ export const myCompanyInfo: CompanyInfo = {
     socials: {
         instagram: { platform: 'instagram', url: 'https://instagram.com' },
         facebook: { platform: 'facebook', url: 'https://facebook.com' },
+        whatsapp: { platform: 'whatsapp', url: 'https://wa.me/573001234567?text='+encodeURIComponent('¡Hola! Me gustaría hacer una consulta sobre sus servicios.') },
+        youtube: { platform: 'youtube', url: 'https://youtube.com' }
     }
 };
 

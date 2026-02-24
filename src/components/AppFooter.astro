@@ -5,6 +5,8 @@ import SectionTitle from "./SectionTitle.astro";
 import IconFacebook from "./icon/IconFacebook.astro";
 import IconInstagram from "./icon/IconInstagram.astro";
 import { myCompanyInfo } from "../lib/dataCompany";
+import IconWhatsApp from "./icon/IconWhatsApp.astro";
+import IconYoutube from "./icon/IconYoutube.astro";
 
 const currentYear = new Date().getFullYear();
 ---
@@ -58,13 +60,21 @@ const currentYear = new Date().getFullYear();
         <div class="social-links-footer">
           <SectionTitle title="Síguenos en nuestras redes sociales" color="var(--color-accent)" align="center" as="h4" fontSize="1.1rem" margin="0 0 0.6rem 0"/>
           <div class="social-icons-footer">
-            <a href={myCompanyInfo.socials.facebook?.url} aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <a href={myCompanyInfo.socials.whatsapp?.url} aria-label="WhatsApp" target="_blank" rel="noopener noreferrer" role="button">
+              <IconWhatsApp size={24}/>
+              WhatsApp
+            </a>
+            <a href={myCompanyInfo.socials.facebook?.url} aria-label="Facebook" target="_blank" rel="noopener noreferrer" role="button">
               <IconFacebook size={24}/>
               Facebook
             </a>
-            <a href={myCompanyInfo.socials.instagram?.url} aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <a href={myCompanyInfo.socials.instagram?.url} aria-label="Instagram" target="_blank" rel="noopener noreferrer" role="button">
               <IconInstagram size={24}/>
               Instagram
+            </a>
+            <a href={myCompanyInfo.socials.youtube?.url} aria-label="YouTube" target="_blank" rel="noopener noreferrer" role="button">
+              <IconYoutube size={28}/>
+              YouTube
             </a>
           </div>
         </div>
@@ -82,12 +92,15 @@ const currentYear = new Date().getFullYear();
 
   <style scoped>
     .social-icons-footer{
-      display: flex;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 400px;
+      margin: 0 auto;
       gap: 1rem;
     }
     .social-icons-footer a {
       display: flex;
+      justify-content: center;
       align-items: center;
       gap: 0.5rem;
       color: var(--color-light);

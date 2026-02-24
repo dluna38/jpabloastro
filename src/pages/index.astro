@@ -1,6 +1,6 @@
 ---
 import { mockServices } from "../lib/dataCompany";
-import BaseLayout  from "../layouts/BaseLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import HeroCarousel from "../components/HeroCarousel.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import StatsSection from "../components/StatsSection.astro";
@@ -8,6 +8,8 @@ import ServiceCard from "../components/ServiceCard.astro";
 import ProjectSection from "../components/ProjectsSection.astro";
 import TestimonialsSection from "../components/TestimonialsSection.astro";
 import PostSection from "../components/PostSection.astro";
+import { sanityClient } from "../lib/sanity";
+import type { Home } from "../../types/sanity";
 
 // Mock Services (keep for now as service implementation wasn't requested yet)
 const displayedServices = mockServices.slice(0, 3);
@@ -17,66 +19,112 @@ const serviceLinks: Record<string, string> = {
 	Remodelaciones: "remodelacion",
 	"Diseño Arquitectónico": "diseno-arquitectonico",
 };
+const videoQuery = `*[_type == "home"][0]{
+  heroTitle,
+  heroVideoId,
+  heroDescription
+}`;
+const videoData: Home = await sanityClient.fetch(videoQuery);
 ---
-<BaseLayout title="Construcciones Juan Pablo II | Empresa de Construcción" description="Empresa de construcción en San Carlos, Antioquia. Expertos en viviendas, remodelaciones y obras civiles con altos estándares de calidad.">
-<div class="home-page">
-	<HeroCarousel />
 
-	<section class="intro-section">
-		<div class="container">
-			<div class="intro-content">
-				<SectionTitle
-					title="Construyendo Sueños en el Oriente Antioqueño"
-					align="center"
-					as="h1"
-				/>
-				<p class="section-text">
-					En Construcciones Juan Pablo II, nos dedicamos a transformar
-					ideas en estructuras sólidas y funcionales. Con sede en San
-					Carlos, Antioquia, somos su aliado estratégico en obra
-					civil, diseño y remodelación.
-				</p>
-				<a href="/nosotros" class="btn btn-primary"
-					>Conoce Más Sobre Nosotros</a
-				>
-			</div>
-		</div>
-	</section>
-	<StatsSection />
-	<section class="services-section">
-		<div class="container">
-			<SectionTitle title="Nuestros Servicios" align="right" />
-			<div class="services-grid">
-				{displayedServices.map((service) => (
-					<ServiceCard
-						title={service.title}
-						description={service.description}
-						icon={service.icon}
-						link={`/servicios#${serviceLinks[service.title]}`}
+<BaseLayout
+	title="Construcciones Juan Pablo II | Empresa de Construcción"
+	description="Empresa de construcción en San Carlos, Antioquia. Expertos en viviendas, remodelaciones y obras civiles con altos estándares de calidad."
+>
+	<div class="home-page">
+		<HeroCarousel />
+
+		<section class="intro-section">
+			<div class="container">
+				<div class="intro-content">
+					<SectionTitle
+						title="Construyendo Sueños en el Oriente Antioqueño"
+						align="center"
+						as="h1"
 					/>
-				))}
+					<p class="section-text">
+						En Construcciones Juan Pablo II, nos dedicamos a
+						transformar ideas en estructuras sólidas y funcionales.
+						Con sede en San Carlos, Antioquia, somos su aliado
+						estratégico en obra civil, diseño y remodelación.
+					</p>
+					<a href="/nosotros" class="btn btn-primary"
+						>Conoce Más Sobre Nosotros</a
+					>
+				</div>
 			</div>
-			<div class="center-btn">
-				<a href="/servicios" class="btn btn-secondary"
-					>Ver Todos los Servicios</a
+		</section>
+		<StatsSection />
+
+		{
+			videoData && (
+				<section
+					class={`hero-video ${videoData.heroDescription ? "with-description" : "full-video"}`}
+				>
+					<div class="video-container">
+						<div class="video-column">
+							<div class="video-responsive">
+								<iframe
+									src={`https://www.youtube.com/embed/${videoData.heroVideoId}?rel=0`}
+									title={videoData.heroTitle}
+									frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen
+								/>
+							</div>
+						</div>
+
+						<div class="content-column">
+							<SectionTitle
+								title={videoData.heroTitle}
+								align="center"
+								as="h2"
+							/>
+							<div class="description-box">
+								<p>{videoData.heroDescription}</p>
+							</div>
+						</div>
+					</div>
+				</section>
+			)
+		}
+
+		<section class="services-section">
+			<div class="container">
+				<SectionTitle title="Nuestros Servicios" align="right" />
+				<div class="services-grid">
+					{
+						displayedServices.map((service) => (
+							<ServiceCard
+								title={service.title}
+								description={service.description}
+								icon={service.icon}
+								link={`/servicios#${serviceLinks[service.title]}`}
+							/>
+						))
+					}
+				</div>
+				<div class="center-btn">
+					<a href="/servicios" class="btn btn-secondary"
+						>Ver Todos los Servicios</a
+					>
+				</div>
+			</div>
+		</section>
+		<ProjectSection />
+		<TestimonialsSection />
+		<PostSection />
+		<section class="cta-section">
+			<div class="container">
+				<h2 class="cta-title">
+					¿Estás listo para construir el proyecto de tus sueños?
+				</h2>
+				<a href="/contacto" class="btn btn-white btn-large"
+					>Contáctanos Hoy</a
 				>
 			</div>
-		</div>
-	</section>
-	<ProjectSection  />
-	<TestimonialsSection />
-	<PostSection />
-	<section class="cta-section">
-		<div class="container">
-			<h2 class="cta-title">
-				¿Estás listo para construir el proyecto de tus sueños?
-			</h2>
-			<a href="/contacto" class="btn btn-white btn-large"
-				>Contáctanos Hoy</a
-			>
-		</div>
-	</section>
-</div>
+		</section>
+	</div>
 </BaseLayout>
 <style>
 	/* ── Section 1: Intro (white) ── */
@@ -160,7 +208,77 @@ const serviceLinks: Record<string, string> = {
 		background-color: transparent;
 		color: var(--color-white);
 	}
+	/* ── Hero Video Styles ── */
+	.hero-video {
+		padding: 2rem 1rem;
+		background-color: var(--color-white);
+		height: 70vh;
+		/* Pure White */
+	}
+	.video-container {
+		max-width: 1200px;
+		height: 100%;
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
 
+	.video-column {
+		height: 100%;
+		width: 100%;
+		padding: 2rem;
+	}
+
+	.video-responsive {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		border-radius: 4px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		overflow: hidden;
+	}
+
+	.video-responsive iframe {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.content-column {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	@media (max-width: 900px) {
+		.content-column {
+			order: -1; /* ahora va primero */
+		}
+		.hero-video {
+			height: auto;
+			padding: 3rem 1rem;
+		}
+
+		.video-container {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.video-column {
+			padding: 0;
+		}
+
+		.video-column,
+		.video-responsive {
+			height: auto;
+		}
+		.video-responsive {
+			aspect-ratio: 16 / 9;
+			width: 100%;
+		}
+	}
+	/*------------*/
 	@media (max-width: 768px) {
 		.cta-section {
 			padding: 4rem 1rem;

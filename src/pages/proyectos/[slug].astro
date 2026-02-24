@@ -7,6 +7,7 @@ import { imageUrlFor } from '../../lib/imageUrlFor';
 import {sanityClient } from '../../lib/sanity';
 import { PortableText } from "astro-portabletext";
 import type { Proyecto } from '../../../types/sanity';
+import { getYoutubeEmbedUrl } from '../../lib/utils';
 
 export async function getStaticPaths() {
 
@@ -57,13 +58,6 @@ interface Props {
 
 const { project } = Astro.props;
 
-function getYoutubeEmbedUrl(url: string): string | undefined {
-  if (!url) return undefined;
-  const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-  const match = url.match(regExp);
-  const videoId = match ? match[1] : null;
-  return videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
-}
 const galleryData = project?.gallery?.map((image: any) => ({
   thumb: imageUrlFor(image).width(400).url(),
   full: imageUrlFor(image).width(1400).url(),

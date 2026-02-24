@@ -1,16 +1,73 @@
 ---
+import IconHandShake from "../components/icon/IconHandShake.astro";
+import ValorCard from "../components/ValorCard.astro";
 import BaseLayout, { type SEOProps } from "../layouts/BaseLayout.astro";
 
 import { myCompanyInfo } from "../lib/dataCompany.ts";
+import IconLightBulb from "../components/icon/IconLightBulb.astro";
+import IconShieldYes from "../components/icon/IconShieldYes.astro";
+import IconCupStar from "../components/icon/IconCupStar.astro";
+import IconCommunication from "../components/icon/IconCommunication.astro";
+import IconJustice from "../components/icon/IconJustice.astro";
+import IconLeaf from "../components/icon/IconLeaf.astro";
+import SectionTitle from "../components/SectionTitle.astro";
 const companyInfo = myCompanyInfo;
 
-const title = "Nosotros | Construcciones Juan Pablo II";
-const description = "Conoce la historia, misión y visión de Construcciones Juan Pablo II S.A.S. Expertos en construcción en el Oriente Antioqueño.";
+const title = "Sobre Nosotros | Construcciones Juan Pablo II";
+const description =
+  "Conoce la historia, misión y visión de Construcciones Juan Pablo II S.A.S. Expertos en construcción en el Oriente Antioqueño.";
+
+const valores = [
+  {
+    titulo: "Compromiso",
+    descripcion:
+      "Priorizamos el bienestar y desarrollo de nuestros colaboradores, reconociéndolos como el motor de nuestro éxito.",
+    icon: IconHandShake,
+    iconSize: 28,
+  },
+  {
+    titulo: "Innovación",
+    descripcion:
+      "Implementamos soluciones creativas y tecnológicas que garantizan la evolución constante de nuestros procesos.",
+    icon: IconLightBulb,
+  },
+  {
+    titulo: "Confianza",
+    descripcion:
+      "Construimos relaciones sólidas y duraderas basadas en la credibilidad y el cumplimiento de nuestras promesas.",
+    icon: IconShieldYes,
+  },
+  {
+    titulo: "Excelencia",
+    descripcion:
+      "Buscamos la máxima calidad en cada detalle de nuestro trabajo, superando los estándares de la industria.",
+    icon: IconCupStar,
+  },
+  {
+    titulo: "Transparencia",
+    descripcion:
+      "Mantenemos una comunicación abierta y honesta en todas nuestras relaciones comerciales y humanas.",
+    icon: IconCommunication,
+    iconSize: 28,
+  },
+  {
+    titulo: "Integridad",
+    descripcion:
+      "Actuamos con rectitud, ética y coherencia en cada una de nuestras decisiones y proyectos.",
+    icon: IconJustice,
+  },
+  {
+    titulo: "Sostenibilidad",
+    descripcion:
+      "Trabajamos con profundo respeto por la comunidad y el medio ambiente, edificando un futuro responsable.",
+    icon: IconLeaf,
+  },
+];
 
 const customSEO: SEOProps = {
   title: title,
   description: description,
-  url: Astro.url.href
+  url: Astro.url.href,
 };
 ---
 
@@ -18,134 +75,346 @@ const customSEO: SEOProps = {
   <div class="about-page">
     <div class="page-header">
       <div class="container">
-        <h1 class="page-title">Nosotros</h1>
-        <p class="page-subtitle">Construyendo confianza y calidad en cada obra.</p>
+        <h1 class="page-title">Sobre Nosotros</h1>
+        <p class="page-subtitle">
+          Construyendo confianza y calidad en cada obra.
+        </p>
       </div>
     </div>
 
     <section class="container content-section">
       <div class="two-column">
         <div class="text-content">
-          <h2 class="section-heading">Nuestra Historia</h2>
+          <SectionTitle title="Nuestra Historia" align="left" />
           <p>
             {companyInfo.description}
           </p>
           <p>
-            Fundada en el corazón del Oriente Antioqueño, <span class="color-accent">Construcciones Juan Pablo II
-              S.A.S.</span> nació con la visión de elevar los estándares de construcción en la región. A lo largo de los
-            años, hemos participado en numerosos proyectos residenciales, comerciales e institucionales, siempre
-            priorizando la satisfacción de nuestros clientes y el respeto por el entorno.
+            Fundada en el corazón del Oriente Antioqueño, <span
+              class="color-accent">Construcciones Juan Pablo II S.A.S.</span
+            > nació con la visión de elevar los estándares de construcción en la región.
+            A lo largo de los años, hemos participado en numerosos proyectos residenciales,
+            comerciales e institucionales, siempre priorizando la satisfacción de
+            nuestros clientes y el respeto por el entorno.
           </p>
         </div>
         <div class="image-content">
-          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
-            alt="Proyecto en construcción" class="about-image" loading="lazy">
+          <img
+            src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
+            alt="Proyecto en construcción"
+            class="about-image"
+            loading="lazy"
+          />
         </div>
       </div>
     </section>
-
-    <section class="mission-vision-section">
+    <section class="container mission-vision-section">
       <div class="container two-column reverse-mobile">
         <div class="image-content">
-          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
-            alt="Proyecto en construcción" class="about-image" loading="lazy">
+          <img
+            src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
+            alt="Proyecto en construcción"
+            class="about-image"
+            loading="lazy"
+          />
         </div>
         <div class="text-content">
-          <h2 class="section-heading">Misión y Visión</h2>
+          <SectionTitle title="Misión y Visión" align="left" />
           <div class="mv-block">
             <h3>Misión</h3>
-            <p>Brindar soluciones integrales en construcción y diseño, superando las expectativas de nuestros clientes
-              mediante la innovación, la calidad y el cumplimiento de los plazos, contribuyendo al desarrollo de nuestra
-              comunidad.</p>
+            <p>
+              Ejecutar proyectos de construcción civil modernos que integren
+              diseño, ingeniería y construcción con excelencia en calidad,
+              brindando soluciones innovadoras y sostenibles. Nos comprometemos
+              a satisfacer las necesidades de nuestros clientes, generar un
+              impacto positivo en el entorno social y económico, y proteger el
+              medio ambiente.
+            </p>
+            <p>
+              Nuestra empresa cuenta con un panel técnico conformado por
+              profesionales idóneos, con valores, capacitados y preparados los
+              cuales hacen de nuestra compañía una empresa capaz para la
+              ejecución de trabajos de ingeniería. Fomentamos la creación de
+              empleo y promovemos un clima laboral que impulse el desarrollo
+              personal y profesional de nuestros colaboradores.
+            </p>
           </div>
           <div class="mv-block">
             <h3>Visión</h3>
-            <p>Ser reconocidos como la empresa constructora líder en el Oriente Antioqueño, destacándonos por nuestra
-              excelencia técnica, ética profesional y compromiso con la sostenibilidad.</p>
+            <p>
+              Ser una empresa líder en el sector de la construcción, reconocida
+              por su excelencia, innovación y calidad en cada proyecto, guiada
+              por principios y valores sólidos, y comprometida con la
+              satisfacción de nuestros clientes y colaboradores.
+            </p>
           </div>
         </div>
       </div>
     </section>
+    <section class="container value-horizontal">
+      <div class="value-card">
+        <div class="value-left">
+          <span class="value-label">PROPUESTA DE VALOR</span>
+          <h2 class="value-title">
+            Edificamos confianza, calidad y futuro.
+          </h2>
+          <p class="value-text">
+            Entregamos proyectos con garantía, cumpliendo tiempos y presupuestos,
+        y priorizando siempre la seguridad y sostenibilidad.
+          </p>
+        </div>
+
+        <div class="value-right">
+          <div class="value-item">
+            <div class="icon">✓</div>
+            <div>
+              <h4>Compromiso real con los tiempos</h4>
+              <p>Cumplimos cronogramas establecidos mediante planificación técnica y control continuo de obra.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="icon">✓</div>
+            <div>
+              <h4>Garantía y respaldo constructivo</h4>
+              <p>Respaldamos cada proyecto con estándares de calidad verificables y procesos certificados.</p>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="icon">✓</div>
+            <div>
+              <h4>Seguridad y sostenibilidad como prioridad</h4>
+              <p>Aplicamos prácticas responsables que protegen a las personas, el entorno y la inversión.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="container valores-section">
+      <div class="header">
+        <SectionTitle title="Nuestros Valores" align="left" />
+        <p>
+          Nuestros valores guían cada decisión, desde el diseño hasta la entrega
+          de llave en mano. Son el eje de la relación que construimos con
+          clientes, proveedores y colaboradores.
+        </p>
+      </div>
+
+      <div class="valores-grid">
+        {valores.map((item) => <ValorCard {...item} />)}
+      </div>
+    </section>
   </div>
-</Layout>
+</BaseLayout>
 
 <style>
-/* Los estilos se mantienen casi idénticos */
-.page-header {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  padding: 4rem 0;
-  text-align: center;
-}
-
-.page-title {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--color-white);
-}
-
-.page-subtitle {
-  font-size: 1.1rem;
-  color: var(--color-light);
-}
-
-.content-section {
-  padding: 5rem 1rem;
-}
-
-.mission-vision-section {
-  background-color: var(--color-background);
-  padding: 5rem 1rem;
-}
-
-.two-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-
-.about-image {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.section-heading {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: var(--color-primary);
-}
-
-.text-content p {
-  margin-bottom: 1.5rem;
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-
-.mv-block {
-  margin-bottom: 2rem;
-}
-
-.mv-block h3 {
-  color: var(--color-accent);
-  margin-bottom: 0.5rem;
-}
-
-.color-accent {
-  color: var(--color-accent);
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .two-column {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .reverse-mobile {
+  .value-horizontal {
+    padding: 0 20px;
     display: flex;
-    flex-direction: column-reverse;
+    justify-content: center;
   }
-}
+
+  .value-card {
+    background-color: var(--color-white);
+    border-radius: 10px;
+    padding: 60px;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    gap: 60px;
+    border: 1px solid var(--color-neutral);
+  }
+
+  .value-left {
+    flex: 1;
+  }
+
+  .value-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .value-label {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: var(--color-steel-gray);
+  }
+
+  .value-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    margin: 15px 0 20px;
+    color: var(--color-primary);
+  }
+
+  .value-text {
+    font-family: var(--font-body);
+    color: var(--color-secondary);
+    line-height: 1.6;
+  }
+
+  .value-item {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .value-item h4 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-primary);
+  }
+
+  .value-item p {
+    margin: 5px 0 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-secondary);
+  }
+
+  .icon {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight bold;
+  }
+
+
+  .page-header {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-white);
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-light);
+  }
+
+  .content-section {
+    padding: 3rem 1rem;
+  }
+
+  .mission-vision-section {
+    background-color: var(--color-background);
+    padding: 3rem 1rem;
+  }
+
+  .two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-image {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-heading {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+  }
+
+  .text-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .mv-block {
+    margin-bottom: 2rem;
+  }
+
+  .mv-block h3 {
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .color-accent {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /*---------------*/
+  .valores-section {
+    padding: 4rem 2rem;
+    margin: 0 auto;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+    background-color: var(
+      --color-ligh
+    ); /* Fondo crema suave como el de la imagen */
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .header h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+
+  .header p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    max-width: 800px;
+  }
+
+  .valores-grid {
+    display: grid;
+    /* 1 columna en móvil, 2 en tablets, 3 en desktop */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 900px) {
+    .value-card {
+      flex-direction: column;
+      padding: 40px 30px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .two-column {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .reverse-mobile {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+    .header h2 {
+      font-size: 2rem;
+    }
+    .valores-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

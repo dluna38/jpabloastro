@@ -27,9 +27,9 @@ const { post } = Astro.props;
         <div class="post-meta">
             <span class="date">{formatDateCustom(post.fechaPublicacion)}</span>
         </div>
-        <h2 class="post-title">
+        <h3 class="post-title">
             <a href={`/blog/${post.slug.current}`}>{post.titulo}</a>
-        </h2>
+        </h3>
         {post.extracto && <p class="post-excerpt">{post.extracto}</p>}
         <div class="post-footer">
             <a href={`/blog/${post.slug.current}`} class="read-more">

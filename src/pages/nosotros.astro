@@ -11,6 +11,7 @@ import IconCommunication from "../components/icon/IconCommunication.astro";
 import IconJustice from "../components/icon/IconJustice.astro";
 import IconLeaf from "../components/icon/IconLeaf.astro";
 import SectionTitle from "../components/SectionTitle.astro";
+import { Image } from "astro:assets";
 const companyInfo = myCompanyInfo;
 
 const title = "Sobre Nosotros | Construcciones Juan Pablo II";
@@ -95,11 +96,13 @@ const customSEO: SEOProps = {
           </p>
         </div>
         <div class="image-content">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
             alt="Proyecto en construcción"
             class="about-image"
             loading="lazy"
+            width={552}
+            height={368}
           />
         </div>
       </div>
@@ -107,11 +110,13 @@ const customSEO: SEOProps = {
     <section class="container mission-vision-section">
       <div class="container two-column reverse-mobile">
         <div class="image-content">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
             alt="Proyecto en construcción"
             class="about-image"
             loading="lazy"
+            width={552}
+            height={368}
           />
         </div>
         <div class="text-content">

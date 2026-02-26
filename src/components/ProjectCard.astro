@@ -15,7 +15,7 @@ const { title, slug, imageUrl, location } = Astro.props;
 <div class="project-card">
   <div class="image-wrapper">
     {imageUrl ? (
-      <Image src={imageUrl} alt={title} class="project-image" loading="lazy" inferSize/>
+      <Image src={imageUrl} alt={title} class="project-image" loading="lazy" width={360} height={250}/>
     ) : (
       <ImagePlaceholder />
     )}

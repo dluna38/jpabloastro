@@ -44,7 +44,8 @@ const slides = [
           loading={index === 0 ? "eager" : "lazy"}
           fetchpriority={index === 0 ? "high" : "low"}
           class="slide-bg-img"
-          inferSize
+          width={1920}
+          height={1080}
         />
         <div class="container slide-content">
           <h2 class="slide-title" aria-label={slide.title}>{slide.title}</h2>
@@ -119,6 +120,7 @@ const slides = [
   min-height: 500px;
   overflow: hidden;
   background-color: var(--color-primary);
+  aspect-ratio: 16 / 9;
 }
 
 .carousel-inner {
@@ -196,6 +198,7 @@ const slides = [
   justify-content: center;
   gap: 1rem;
   z-index: 10;
+  min-height: 12px;
 }
 
 .control-dot {

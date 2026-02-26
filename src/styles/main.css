@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('\\fonts\\Inter_400_normal.woff2') format('woff2');
+  src: url('/fonts/Inter_400_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
 @font-face {
@@ -11,7 +11,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('\\fonts\\Inter_500_normal.woff2') format('woff2');
+  src: url('/fonts/Inter_500_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
 @font-face {
@@ -19,7 +19,7 @@
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('\\fonts\\Inter_600_normal.woff2') format('woff2');
+  src: url('/fonts/Inter_600_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
 
@@ -29,7 +29,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('\\fonts\\Outfit_500_normal.woff2') format('woff2');
+  src: url('/fonts/Outfit_500_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
 @font-face {
@@ -37,7 +37,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('\\fonts\\Outfit_700_normal.woff2') format('woff2');
+  src: url('/fonts/Outfit_700_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
 

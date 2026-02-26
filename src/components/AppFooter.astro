@@ -48,13 +48,13 @@ const currentYear = new Date().getFullYear();
         <div>
         <ul>
           <li>
-            <strong>Dirección:</strong>{myCompanyInfo.address}
+            <strong>Dirección: </strong>{myCompanyInfo.address}
           </li>
           <li>
-            <strong>Teléfono:</strong>{myCompanyInfo.phone}
+            <strong>Teléfono: </strong><a href="tel:+573001234567" role="button">{myCompanyInfo.phone}</a>
           </li>
           <li>
-            <strong>Email:</strong> {myCompanyInfo.email}
+            <strong>Email: </strong> <a href={`mailto:${myCompanyInfo.email}`}>{myCompanyInfo.email}</a>
           </li>
         </ul>
         <div class="social-links-footer">

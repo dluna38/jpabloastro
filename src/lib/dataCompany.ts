@@ -10,7 +10,7 @@ export interface CompanyInfo {
     _type: 'companyInfo';
     name: string;
     legalName: string;
-    description: string;
+    description: string[];
     address: string;
     phone: string;
     email: string;
@@ -31,7 +31,7 @@ export const myCompanyInfo: CompanyInfo = {
     _type: 'companyInfo',
     name: 'Juan Pablo II',
     legalName: 'Construcciones Juan Pablo II S.A.S.',
-    description: 'Somos una empresa constructora líder en el Oriente Antioqueño, comprometida con la calidad, la innovación y el desarrollo sostenible de nuestra región. Con años de experiencia, transformamos sueños en realidades tangibles.',
+    description: ['Somos una empresa constructora joven en el Oriente Antioqueño, comprometida con la calidad, innovación y el desarrollo sostenible de nuestra región. Con 5 años de experiencia, transformamos sueños en realidades tangibles.','Fundada en el corazón del Oriente Antioqueño, Construcciones Juan Pablo II S.A.S. nació con la visión de elevar los estándares de construcción en la región. Durante este tiempo, hemos participado en numerosos proyectos urbanos y rurales, siempre priorizando la satisfacción de nuestros usuarios y el respeto por el entorno.'],
     address: 'San Carlos, Antioquia, Colombia',
     phone: '+57 300 123 4567',
     email: 'contacto@construccionesjuanpabloii.com',

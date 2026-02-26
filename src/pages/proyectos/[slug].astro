@@ -72,6 +72,7 @@ const heroBgStyle = project?.gallery && project.gallery[0]
 const pageTitle = project ? `${project.title} | Construcciones Juan Pablo II` : 'Proyecto no encontrado';
 
 function blocksToText(blocks: any[] = []) {
+  if (!Array.isArray(blocks)) return '';
   return blocks
     .map(block => {
       if (block._type !== 'block' || !block.children) {

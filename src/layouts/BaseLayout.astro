@@ -1,15 +1,17 @@
 ---
-import '../styles/main.css';
+import "../styles/main.css";
 import AppHeader from "../components/AppHeader.astro";
 import AppFooter from "../components/AppFooter.astro";
+import { myCompanyInfo } from "../lib/dataCompany";
+import IconWhatsApp from "../components/icon/IconWhatsApp.astro";
 
 export interface SEOProps {
   title?: string;
   description?: string;
   image?: string;
   url?: string;
-  type?: 'website' | 'article' | 'profile';
-  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
+  type?: "website" | "article" | "profile";
+  twitterCard?: "summary" | "summary_large_image" | "app" | "player";
 }
 
 interface Props {
@@ -19,29 +21,31 @@ interface Props {
   schema?: object;
 }
 
-const { title, description,seo,schema } = Astro.props;
-
+const { title, description, seo, schema } = Astro.props;
 
 const siteName = "Construcciones Juan Pablo II S.A.S.";
 const canonicalURL = seo?.url ?? Astro.url.href;
 const defaultImage = `${Astro.site}logo_full.webp`;
-const metaDescription = description ?? seo?.description ?? "Construcciones Juan Pablo II S.A.S., empresa de construcción en San Carlos, Antioquia.";
+const metaDescription =
+  description ??
+  seo?.description ??
+  "Construcciones Juan Pablo II S.A.S., empresa de construcción en San Carlos, Antioquia.";
 
 const BaseLayoutSchema = {
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
-  "name": "Construcciones Juan Pablo II S.A.S.",
-  "url": `${Astro.site}`,
-  "logo": `${Astro.site}logo_full.webp`,
-  "email": "info@construccionesjuanpabloii.com",
-  "address": {
+  name: "Construcciones Juan Pablo II S.A.S.",
+  url: `${Astro.site}`,
+  logo: `${Astro.site}logo_full.webp`,
+  email: "info@construccionesjuanpabloii.com",
+  address: {
     "@type": "PostalAddress",
-    "addressLocality": "San Carlos",
-    "addressRegion": "Antioquia",
-    "addressCountry": "CO",
-    "areaServed": "Antioquia"
+    addressLocality: "San Carlos",
+    addressRegion: "Antioquia",
+    addressCountry: "CO",
+    areaServed: "Antioquia",
   },
-  "telephone": "+57 3000000000"
+  telephone: "+57 3000000000",
 };
 const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
 ---
@@ -51,7 +55,12 @@ const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={seo?.description ?? description ??"Construcciones Juan Pablo II S.A.S., empresa de construcción en San Carlos, Antioquia. Expertos en viviendas, remodelaciones y obras civiles con altos estándares de calidad."} />
+    <meta
+      name="description"
+      content={seo?.description ??
+        description ??
+        "Construcciones Juan Pablo II S.A.S., empresa de construcción en San Carlos, Antioquia. Expertos en viviendas, remodelaciones y obras civiles con altos estándares de calidad."}
+    />
     <title>{title}</title>
 
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -70,7 +79,6 @@ const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
     <meta property="twitter:description" content={metaDescription} />
     <meta property="twitter:image" content={seo?.image ?? defaultImage} />
 
-      
     <script type="application/ld+json" set:html={schemaString} />
   </head>
   <body>
@@ -81,6 +89,19 @@ const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
         <slot />
       </main>
       <AppFooter />
+    </div>
+    <div class="button-wpp">
+      <a
+        class="whatsapp-float"
+        href={myCompanyInfo.socials.whatsapp?.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        role="button"
+        aria-label="Contáctanos por WhatsApp"
+      >
+        <span class="whatsapp-tooltip">¿Tienes dudas? ¡Escríbenos!</span>
+        <IconWhatsApp size="60" />
+      </a>
     </div>
   </body>
 </html>
@@ -94,5 +115,69 @@ const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
 
   .main-content {
     flex: 1;
+  }
+
+  .whatsapp-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .whatsapp-tooltip {
+    position: absolute;
+    right: 75px; /* Separación del botón */
+    background-color: #ffffff;
+    color: #444;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    pointer-events: none; /* Para que no interfiera con clics */
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.4s ease;
+  }
+
+  .whatsapp-tooltip::after {
+    content: "";
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 6px solid #fff;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+  }
+
+  .whatsapp-float:hover .whatsapp-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .whatsapp-float {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>

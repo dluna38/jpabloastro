@@ -180,4 +180,25 @@ const schemaString = JSON.stringify(schema ?? BaseLayoutSchema);
       transform: translateY(0);
     }
   }
+
+  @media (max-width: 768px) {
+    .whatsapp-float {
+      width: 50px; /* Un poco más pequeño y ergonómico */
+      height: 50px;
+      bottom: 15px; /* Más pegado al borde para no tapar contenido */
+      right: 15px;
+    }
+
+    /* Ajustamos el tamaño del icono dentro */
+    .whatsapp-float svg {
+      width: 30px !important;
+      height: 30px !important;
+    }
+
+    /* El tooltip en móvil suele estorbar, es mejor ocultarlo 
+     o hacerlo muy pequeño */
+    .whatsapp-tooltip {
+      display: none; /* Recomendado: ocultarlo en móvil */
+    }
+  }
 </style>

@@ -36,10 +36,10 @@ interface Props {
 
 const { project } = Astro.props;
 
-// Preparación de datos de galería para inyectar en el cliente y usar en el servidor
+
 const galleryData =
   project?.gallery?.map((image: any) => ({
-    thumb: imageUrlFor(image).width(400).height(300).url(), // Dimensiones explícitas para el crop
+    thumb: imageUrlFor(image).width(400).height(300).url(),
     full: imageUrlFor(image).width(1400).url(),
     alt: image.alt || project.title,
   })) || [];
@@ -48,10 +48,6 @@ const heroBgStyle =
   project?.gallery && project.gallery[0]
     ? `background-image: url(${imageUrlFor(project.gallery[0]).width(1200).height(250).url()})`
     : "background-color: var(--color-primary)";
-
-const pageTitle = project
-  ? `${project.title} | Construcciones Juan Pablo II`
-  : "Proyecto no encontrado";
 
 function blocksToText(blocks: any[] = []) {
   if (!Array.isArray(blocks)) return "";
@@ -63,7 +59,6 @@ function blocksToText(blocks: any[] = []) {
     .join(" ");
 }
 
-// FIX: Manejo seguro de la descripción SEO
 const rawDescription = blocksToText(project?.description);
 const seoDescription =
   rawDescription.length > 150
@@ -86,12 +81,12 @@ const customSEO: SEOProps = {
     project?.gallery && project.gallery[0]
       ? imageUrlFor(project.gallery[0]).width(1200).height(630).url()
       : undefined,
-  twitterCard: "summary",
+  twitterCard: "summary_large_image",
   url: Astro.url.href,
 };
 ---
 
-<BaseLayout title={pageTitle} schema={schema} seo={customSEO}>
+<BaseLayout title={project.title} schema={schema} seo={customSEO}>
   <div class="project-detail-page">
     {
       !project ? (
@@ -554,15 +549,52 @@ const customSEO: SEOProps = {
 </script>
 
 <style>
+
+  /* lost */
+  .info-card {
+    background-color: var(--color-background, #fff);
+    padding: 2rem;
+    border-radius: 8px;
+    position: sticky;
+    top: 100px;
+  }
+
+  .info-card h3 {
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-accent);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+  }
+
+  .info-card ul {
+    list-style: none;
+    margin-bottom: 2rem;
+    padding: 0;
+  }
+
+  .info-card li {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 0.5rem;
+  }
+  .full-width {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    display: block;
+  }
+  /** */
   .hero-image {
-    /* En lugar de mezclar height, min-height y max-height, usa clamp */
     height: clamp(200px, 40vh, 250px);
     background-size: cover;
     background-position: center;
     position: relative;
     background-color: var(
       --color-primary
-    ); /* Fallback mientras carga la foto */
+    );
   }
 
   .project-info-detail {

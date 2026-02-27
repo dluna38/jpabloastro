@@ -64,11 +64,23 @@ const seoDescription =
     ? rawDescription.slice(0, 150) + "..."
     : rawDescription;
 
+const keywordsFromCategories = project?.categories 
+  ? project.categories.join(", ") 
+  : "construcción, proyectos, obras";
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "Project",
   name: project?.title,
   description: seoDescription,
+  image: project?.gallery && project.gallery[0]
+    ? imageUrlFor(project.gallery[0]).width(1200).height(630).url()
+    : undefined,
+  category: project?.categories ? project.categories.join(", ") : undefined,
+  keywords: keywordsFromCategories,
+  provider: {
+    "@id": `${Astro.site}#organization`
+  }
 };
 
 const customSEO: SEOProps = {
@@ -76,6 +88,7 @@ const customSEO: SEOProps = {
     ? `${project.title} | Construcciones Juan Pablo II`
     : "Proyectos de Construcción en San Carlos",
   description: seoDescription,
+  keywords: keywordsFromCategories,
   image:
     project?.gallery && project.gallery[0]
       ? imageUrlFor(project.gallery[0]).width(1200).height(630).url()

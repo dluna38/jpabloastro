@@ -9,19 +9,44 @@ const title = "Servicios | Construcciones Juan Pablo II";
 const description =
   "Ofrecemos servicios de Obra Civil, Mejora de viviendas y Remodelaciones, Diseño Arquitectónico en San Carlos y el Oriente Antioqueño.";
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  description:
-    "Obra Civil, Mejora de viviendas y Remodelaciones, Diseño Arquitectónico",
-  provider: {
-    "@type": "HomeAndConstructionBusiness",
-    name: "Construcciones Juan Pablo II S.A.S.",
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Obra Civil",
+    description: "Ejecutamos proyectos de construcción civil desde cero con los más altos estándares de calidad, incluyendo viviendas, edificaciones comerciales e infraestructura.",
+    provider: {
+      "@id": `${Astro.site}#organization`
+    }
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Mejoramiento de Vivienda y Remodelación",
+    description: "Transformamos espacios existentes combinando funcionalidad y estética, abarcando ampliaciones, modernización de cocinas, baños y reparaciones estructurales.",
+    provider: {
+      "@id": `${Astro.site}#organization`
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Diseño Arquitectónico",
+    description: "Creamos diseños de planos, renders 3D, tramitación de licencias y diseño adaptado al clima del Oriente Antioqueño acompañando todo el proceso creativo.",
+    provider: {
+      "@id": `${Astro.site}#organization`
+    }
+  }
+];
+
+const customSEO = {
+  title: title,
+  description: description,
+  keywords: "construcción, obra civil, diseño arquitectónico, remodelación, San Carlos, Oriente Antioqueño",
 };
 ---
 
-<BaseLayout title={title} description={description} schema={schema}>
+<BaseLayout title={title} seo={customSEO} schema={schema}>
   <div class="services-page">
     <div class="page-header">
       <div class="container">

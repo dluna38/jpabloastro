@@ -5,7 +5,7 @@ import PostCard from '../../components/PostCard.astro';
 import { sanityClient } from '../../lib/sanity';
 import type { Publicacion as Post } from '../../../types/sanity';
 
-const LIMIT = 10;
+const LIMIT = 20;
 
 // Consulta inicial (SSR)
 const queryPosts = `{
@@ -23,11 +23,27 @@ const queryPosts = `{
 const { items: posts, total } = await sanityClient.fetch(queryPosts);
 const lastItem = posts[posts.length - 1];
 const hasMoreInitial = posts.length < total;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": posts.map((post: Post, index: number) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "url": `${Astro.site}blog/${post.slug.current}`,
+    "name": post.titulo
+  }))
+};
 ---
 
 <BaseLayout 
   title="Blog | Construcciones Juan Pablo II" 
-  description="Noticias, artículos y actualizaciones sobre la Construcciones Juan Pablo II y el mundo de la construcción en el Oriente Antioqueño."
+  seo={{
+    title: "Blog | Construcciones Juan Pablo II",
+    description: "Noticias, artículos y actualizaciones sobre la Construcciones Juan Pablo II y el mundo de la construcción en el Oriente Antioqueño.",
+    keywords: "blog, noticias, construcción, arquitectura, artículos, San Carlos"
+  }}
+  schema={schema}
 >
   <div class="blog-page">
     <div class="page-header">

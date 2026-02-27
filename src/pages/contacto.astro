@@ -9,9 +9,26 @@ import IconYoutube from "../components/icon/IconYoutube.astro";
 import BaseLayout, { type SEOProps } from "../layouts/BaseLayout.astro";
 import { myCompanyInfo } from "../lib/dataCompany";
 
+
 const pageTitle = "Contacto | Construcciones Juan Pablo II";
 const pageDescription =
   "Contáctanos para tus proyectos de construcción y remodelación en San Carlos, Antioquia. Cotiza hoy mismo.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: pageTitle,
+  description: pageDescription,
+  image: myCompanyInfo.logo,
+  about: myCompanyInfo.description[0],
+  url: Astro.url.href,
+  sameAs: [
+    myCompanyInfo.socials.instagram?.url,
+    myCompanyInfo.socials.facebook?.url,
+    myCompanyInfo.socials.whatsapp?.url,
+    myCompanyInfo.socials.youtube?.url,
+  ],
+};  
 
 const customSEO: SEOProps = {
   title: pageTitle,
@@ -20,7 +37,7 @@ const customSEO: SEOProps = {
 };
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription} seo={customSEO}>
+<BaseLayout title={pageTitle} description={pageDescription} seo={customSEO} schema={schema}>
   <div class="contact-page">
     <div class="page-header">
       <div class="container">

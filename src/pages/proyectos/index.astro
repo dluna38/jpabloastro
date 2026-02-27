@@ -6,7 +6,7 @@ import { sanityClient } from '../../lib/sanity';
 import type { Proyecto } from '../../../types/sanity';
 import { imageUrlFor } from '../../lib/imageUrlFor';
 
-const LIMIT = 10;
+const LIMIT = 20;
 
 // Consulta optimizada: Trae los items y el total en una sola petición a Sanity
 const queryInitial = `{
@@ -26,11 +26,27 @@ const lastItem = projects[projects.length - 1];
 
 const hasMoreInitial = projects.length < total;
 
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": projects.map((project: Proyecto, index: number) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "url": `${Astro.site}proyectos/${project.slug.current}`,
+    "name": project.title
+  }))
+};
+
 ---
 
 <BaseLayout 
   title="Proyectos | Construcciones Juan Pablo II"
-  description="Galería de proyectos de construcción y remodelación realizados por Construcciones Juan Pablo II S.A.S."
+  seo={{
+    title: "Proyectos | Construcciones Juan Pablo II",
+    description: "Galería de proyectos de construcción y remodelación realizados por Construcciones Juan Pablo II S.A.S.",
+    keywords: "proyectos, construcción, remodelación, portafolio, San Carlos, Antioquia"
+  }}
+  schema={schema}
 >
   <div class="projects-page">
     <div class="page-header">

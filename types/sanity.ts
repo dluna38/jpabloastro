@@ -6,7 +6,7 @@ export type Home = {
   _updatedAt: string;
   _rev: string;
   heroTitle: string;
-  heroDescription?: string;
+  heroDescription: string;
   heroVideoId: string;
 };
 
@@ -47,6 +47,12 @@ export type Proyecto = {
   date?: string;
   areaConstruida?: number;
   categories?: Array<string>;
+  additionalDetails?: Array<{
+    label?: string;
+    value?: string;
+    _type: "detail";
+    _key: string;
+  }>;
   gallery?: Array<{
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -120,6 +126,7 @@ export type Publicacion = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    caption?: string;
     _type: "image";
     _key: string;
   }>;
@@ -291,6 +298,7 @@ export type QueryResult = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
+    caption?: string;
     _type: "image";
     _key: string;
   }>;

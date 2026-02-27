@@ -19,6 +19,8 @@ export async function getStaticPaths() {
     description,
     date,
     categories,
+    areaConstruida,
+    additionalDetails,
     gallery,
     videoUrl
   }`;
@@ -206,6 +208,12 @@ const customSEO: SEOProps = {
                         <span class="value-detail">{project.date}</span>
                       </li>
                     )}
+                    {project.areaConstruida && (
+                      <li class="project-item-detail">
+                        <strong>Área Construida:</strong>{" "}
+                        <span class="value-detail">{project.areaConstruida} m²</span>
+                      </li>
+                    )}
                     {project.categories && project.categories.length > 0 && (
                       <li class="project-item-detail">
                         <strong>Categoría:</strong>
@@ -218,6 +226,14 @@ const customSEO: SEOProps = {
                             .join(" / ")}
                         </span>
                       </li>
+                    )}
+                    {project.additionalDetails && project.additionalDetails.length > 0 && (
+                      project.additionalDetails?.map((detail: any) => (
+                        <li class="project-item-detail">
+                          <strong>{detail.label}:</strong>{" "}
+                          <span class="value-detail">{detail.value}</span>
+                        </li>
+                      ))
                     )}
                   </ul>
                   <a href="/contacto" class="btn btn-primary full-width">

@@ -10,7 +10,8 @@ const projectsQuery = `*[_type == "proyecto"] | order(fechaPublicacion desc) [0.
   title, 
   slug, 
   location, 
-  gallery
+  gallery,
+  "coverImage": coalesce(gallery[isCover == true][0], gallery[0])
 }`;
 
 let projects = [];
@@ -33,14 +34,14 @@ const hasProjects = projects && projects.length > 0;
       </div>
     ) : (
       <div class="projects-grid">
-        {projects.map((project: Project) => (
+        {projects.map((project: Project & { coverImage: string }) => (
           <ProjectCard 
             title={project.title}
             slug={project.slug.current}
             location={project.location}
             imageUrl={
-              project.gallery && project.gallery[0] 
-                ? imageUrlFor(project.gallery[0]).width(600).height(400).url() 
+              project.coverImage 
+                ? imageUrlFor(project.coverImage).width(600).height(400).url() 
                 : undefined
             }
           />

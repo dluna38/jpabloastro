@@ -6,7 +6,7 @@ import { sanityClient } from '../../lib/sanity';
 import type { Proyecto } from '../../../types/sanity';
 import { imageUrlFor } from '../../lib/imageUrlFor';
 
-const LIMIT = 20;
+const LIMIT = 12;
 
 // Consulta optimizada: Trae los items y el total en una sola petición a Sanity
 const queryInitial = `{
@@ -16,7 +16,8 @@ const queryInitial = `{
     slug,
     location,
     gallery,
-    fechaPublicacion
+    fechaPublicacion,
+    "coverImage": coalesce(gallery[isCover == true][0], gallery[0])
   },
   "total": count(*[_type == "proyecto"])
 }`;
@@ -58,12 +59,12 @@ const schema = {
 
     <section class="container content-section">
       <div id="projects-grid" class="projects-grid">
-        {projects.map((project: Proyecto) => (
+        {projects.map((project: Proyecto & { coverImage: string }) => (
           <ProjectCard 
             title={project.title} 
             slug={project.slug.current}
             location={project.location}
-            imageUrl={project.gallery && project.gallery[0] ? imageUrlFor(project.gallery[0]).width(600).height(400).url() : undefined}
+            imageUrl={project.coverImage ? imageUrlFor(project.coverImage).width(600).height(400).url() : undefined}
           />
         ))}
       </div>

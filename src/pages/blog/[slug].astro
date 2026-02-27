@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 
-import Image from 'astro/components/Image.astro';
+import { Image } from "astro:assets";
 import type { Publicacion } from '../../../types/sanity';
 import BaseLayout, { type SEOProps } from '../../layouts/BaseLayout.astro';
 import formatDateCustom from '../../lib/formatDateCustom';

@@ -15,7 +15,7 @@ const lastId = (!lastIdParam || lastIdParam === 'undefined' || lastIdParam === '
 
 
 
-const limit = 20;
+const limit = 12;
 
 const query = `*[_type == "publicacion" && defined(slug.current) && (
   fechaPublicacion < $lastDate || 

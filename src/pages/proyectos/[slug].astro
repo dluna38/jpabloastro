@@ -22,7 +22,8 @@ export async function getStaticPaths() {
     areaConstruida,
     additionalDetails,
     gallery,
-    videoUrl
+    videoUrl,
+    "coverImage": coalesce(gallery[isCover == true][0], gallery[0])
   }`;
 
   const projects = await sanityClient.fetch(query);
@@ -34,7 +35,7 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  project: Proyecto;
+  project: Proyecto & { coverImage: string };
 }
 
 const { project } = Astro.props;
@@ -114,7 +115,7 @@ const customSEO: SEOProps = {
             {
               project?.gallery && project.gallery[0] && (
                 <Image
-                  src={imageUrlFor(project.gallery[0]).width(1200).height(250).url()}
+                  src={imageUrlFor(project.coverImage).width(1200).height(250).url()}
                   alt={project.title}
                   width={1200}
                   height={250}

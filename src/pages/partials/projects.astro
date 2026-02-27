@@ -15,7 +15,7 @@ const rawLastId = Astro.url.searchParams.get('lastId');
 const lastDate = (!rawLastDate || rawLastDate === 'undefined' || rawLastDate === 'null') ? null : rawLastDate;
 const lastId = (!rawLastId || rawLastId === 'undefined' || rawLastId === 'null') ? null : rawLastId;
 
-const limit = 20;
+const limit = 12;
 
 // 3. Usamos $fetchLimit como parámetro de Sanity en lugar de interpolar el string. Es mucho más seguro.
 const query = `*[_type == "proyecto" && (

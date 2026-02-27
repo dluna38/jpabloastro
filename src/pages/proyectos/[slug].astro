@@ -8,6 +8,7 @@ import { sanityClient } from "../../lib/sanity";
 import { PortableText } from "astro-portabletext";
 import type { Proyecto } from "../../../types/sanity";
 import { getYoutubeEmbedUrl } from "../../lib/utils";
+import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
   const query = `*[_type == "proyecto" ]{
@@ -44,10 +45,6 @@ const galleryData =
     alt: image.alt || project.title,
   })) || [];
 
-const heroBgStyle =
-  project?.gallery && project.gallery[0]
-    ? `background-image: url(${imageUrlFor(project.gallery[0]).width(1200).height(250).url()})`
-    : "background-color: var(--color-primary)";
 
 function blocksToText(blocks: any[] = []) {
   if (!Array.isArray(blocks)) return "";
@@ -98,7 +95,19 @@ const customSEO: SEOProps = {
         </div>
       ) : (
         <div class="project-content">
-          <div class="hero-image" style={heroBgStyle}>
+          <div class="hero-image">
+            {
+              project?.gallery && project.gallery[0] && (
+                <Image
+                  src={imageUrlFor(project.gallery[0]).width(1200).height(250).url()}
+                  alt={project.title}
+                  width={1200}
+                  height={250}
+                  class="hero-img"
+                  loading="eager"
+                />
+              )
+            }
             <div class="overlay">
               <div class="container hero-text">
                 <h1 class="project-title">{project.title}</h1>
@@ -589,12 +598,19 @@ const customSEO: SEOProps = {
   /** */
   .hero-image {
     height: clamp(200px, 40vh, 250px);
-    background-size: cover;
-    background-position: center;
     position: relative;
-    background-color: var(
-      --color-primary
-    );
+    background-color: var(--color-primary);
+    overflow: hidden;
+  }
+
+  .hero-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
   }
 
   .project-info-detail {
@@ -625,6 +641,7 @@ const customSEO: SEOProps = {
     display: flex;
     align-items: flex-end;
     padding-bottom: 4rem;
+    z-index: 1;
   }
 
   .project-title {

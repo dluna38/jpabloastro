@@ -66,18 +66,16 @@ const {
     border: 1px solid var(--color-neutral, #e5e5e5);
   }
 
-  /* --- Variaciones de Layout --- */
   .horizontal .value-card {
     flex-direction: row;
   }
   
   .vertical .value-card {
     flex-direction: column;
-    max-width: 800px; /* Un poco más angosto para que el texto no sea tan largo en vertical */
+    max-width: 800px; 
     gap: 40px;
   }
 
-  /* Responsive: Siempre vertical en móviles */
   @media (max-width: 768px) {
     .value-card {
       flex-direction: column !important;

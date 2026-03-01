@@ -16,13 +16,13 @@ const { titulo, descripcion, icon: Icon,iconSize } = Astro.props;
 <style>
     .valor-header {
     display: flex;
-    align-items: center; /* Centrado vertical */
-    gap: 1rem; /* Espacio generoso entre icono y texto */
+    align-items: center; 
+    gap: 1rem; 
     margin-bottom: 1.2rem;
   }
   .valor-card {
     background: transparent;
-    border: 1px solid #e9dcc9; /* Color de borde sutil */
+    border: 1px solid #e9dcc9; 
     border-radius: 16px;
     padding: 2rem;
     transition:
@@ -33,13 +33,13 @@ const { titulo, descripcion, icon: Icon,iconSize } = Astro.props;
     font-size: 0.95rem;
     line-height: 1.6;
     color: #666;
-    margin-left: 0.5rem; /* Un pequeño sangrado opcional para dar aire */
+    margin-left: 0.5rem;  
   }
   .valor-card h3 {
     font-size: 1.25rem;
     color: #333;
     font-weight: 700;
-    margin: 0; /* Quitamos el margen para que alinee perfecto con el icono */
+    margin: 0; 
     line-height: 1.2;
   }
   .valor-card:hover {
@@ -54,16 +54,15 @@ const { titulo, descripcion, icon: Icon,iconSize } = Astro.props;
     justify-content: center;
     font-size: 1.4rem;
     color: #d97767;
-    /* Un fondo sutil circular ayuda a que no se vea pegado */
     background-color: rgba(217, 119, 103, 0.1);
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    flex-shrink: 0; /* Evita que el icono se aplaste */
+    flex-shrink: 0; 
   }
   .valor-card:last-child:nth-child(7) {
-    grid-column: 1 / -1; /* Ocupa todas las columnas */
-    max-width: 600px; /* Opcional: para que no se estire demasiado el texto */
+    grid-column: 1 / -1; 
+    max-width: 600px; 
     justify-self: center;
   }
 </style>

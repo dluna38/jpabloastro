@@ -63,14 +63,14 @@ const stats = [
         if (section) observer.observe(section);
     };
 
-    // Ejecutar en carga inicial y tras navegación con ViewTransitions
+
     initStats();
     document.addEventListener('astro:page-load', initStats);
 </script>
 
 <style>
 .stats-section {
-    padding: 3rem 1rem; /* Ajustado para dar más aire */
+    padding: 3rem 1rem;
     background-color: var(--color-secondary);
     color: var(--color-white);
 }

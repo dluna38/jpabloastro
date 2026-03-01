@@ -36,7 +36,6 @@ const { title, description, icon, link = "/servicios" } = Astro.props;
 <style>
   .service-card {
     background-color: var(--color-white);
-    /* Quitamos el padding global para que la barra llegue al borde */
     padding: 0;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -47,14 +46,14 @@ const { title, description, icon, link = "/servicios" } = Astro.props;
     display: flex;
     flex-direction: column;
     border: 1.5px solid var(--color-neutral);
-    overflow: hidden; /* Importante para que el fondo del icono respete el border-radius */
+    overflow: hidden; 
   }
   .icon-bar {
-    background-color: var(--color-light); /* Color crema de tu paleta */
+    background-color: var(--color-light); 
     display: flex;
-    justify-content: center; /* Centra el icono horizontalmente */
-    align-items: center; /* Centra el icono verticalmente */
-    padding: 1rem 0; /* Ajusta esto para cambiar el alto de la franja */
+    justify-content: center; 
+    align-items: center; 
+    padding: 1rem 0; 
     width: 100%;
   }
   .service-card:hover {
@@ -63,7 +62,6 @@ const { title, description, icon, link = "/servicios" } = Astro.props;
   }
 
   .icon-wrapper {
-    /* Color oscuro de tu paleta para el icono */
     color: var(--color-secondary);
   }
   .card-content {
@@ -76,12 +74,12 @@ const { title, description, icon, link = "/servicios" } = Astro.props;
   .service-title {
     font-size: 1.3rem;
     margin-bottom: 0.75rem;
-    color: #2b3d41; /* Color oscuro para contraste */
+    color: #2b3d41; 
     font-weight: 700;
   }
 
   .service-description {
-    color: #4c5f6b; /* Gris azulado de tu paleta */
+    color: #4c5f6b; 
     font-size: 0.95rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
@@ -89,7 +87,7 @@ const { title, description, icon, link = "/servicios" } = Astro.props;
   }
 
   .learn-more {
-    color: #ae381e; /* Rojo terracota para el CTA */
+    color: #ae381e; 
     font-weight: 700;
     font-size: 0.9rem;
     text-decoration: none;

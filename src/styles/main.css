@@ -6,6 +6,7 @@
   src: url('/fonts/Inter_400_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
+
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -14,6 +15,7 @@
   src: url('/fonts/Inter_500_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
+
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -23,7 +25,6 @@
   unicode-range: var(--latin-range);
 }
 
-/* OUTFIT */
 @font-face {
   font-family: 'Outfit';
   font-style: normal;
@@ -32,6 +33,7 @@
   src: url('/fonts/Outfit_500_normal.woff2') format('woff2');
   unicode-range: var(--latin-range);
 }
+
 @font-face {
   font-family: 'Outfit';
   font-style: normal;

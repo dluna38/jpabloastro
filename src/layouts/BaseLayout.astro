@@ -39,6 +39,7 @@ const BaseLayoutSchema = {
   name: "Construcciones Juan Pablo II S.A.S.",
   url: `${Astro.site}`,
   logo: `${Astro.site}logo_full.webp`,
+  image: `${Astro.site}logo_full.webp`,
   email: "informacion@juanpabloll.com",
   address: {
     "@type": "PostalAddress",
@@ -146,7 +147,7 @@ const schemaString = JSON.stringify(finalSchema);
 
   .whatsapp-tooltip {
     position: absolute;
-    right: 75px; /* Separación del botón */
+    right: 75px; 
     background-color: #ffffff;
     color: #444;
     padding: 8px 15px;
@@ -155,7 +156,7 @@ const schemaString = JSON.stringify(finalSchema);
     font-weight: 500;
     white-space: nowrap;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    pointer-events: none; /* Para que no interfiera con clics */
+    pointer-events: none; 
     opacity: 0;
     transform: translateX(10px);
     transition: all 0.4s ease;
@@ -194,22 +195,19 @@ const schemaString = JSON.stringify(finalSchema);
 
   @media (max-width: 768px) {
     .whatsapp-float {
-      width: 50px; /* Un poco más pequeño y ergonómico */
+      width: 50px; 
       height: 50px;
-      bottom: 15px; /* Más pegado al borde para no tapar contenido */
+      bottom: 15px; 
       right: 15px;
     }
 
-    /* Ajustamos el tamaño del icono dentro */
     .whatsapp-float svg {
       width: 30px !important;
       height: 30px !important;
     }
 
-    /* El tooltip en móvil suele estorbar, es mejor ocultarlo 
-     o hacerlo muy pequeño */
     .whatsapp-tooltip {
-      display: none; /* Recomendado: ocultarlo en móvil */
+      display: none;
     }
   }
 </style>

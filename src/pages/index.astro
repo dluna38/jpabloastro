@@ -128,12 +128,10 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 	</div>
 </BaseLayout>
 <style>
-	/* ── Section 1: Intro (white) ── */
 	.intro-section {
 		padding: 2rem 1rem;
 		text-align: center;
 		background-color: var(--color-white);
-		/* Powder Petal */
 	}
 
 	.intro-content {
@@ -148,11 +146,11 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 		line-height: 1.8;
 	}
 
-	/* ── Section 3: Services (light beige) ── */
+
 	.services-section {
 		padding: 2rem 1rem;
 		background-color: var(--color-light-gray);
-		/* Pure White */
+
 	}
 
 	.services-grid {
@@ -166,14 +164,14 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 		text-align: center;
 	}
 
-	/* ── Responsive ── */
+
 	@media (max-width: 768px) {
 		.section-title {
 			font-size: 2rem;
 		}
 	}
 
-	/* ── Section: CTA (dark background) ── */
+
 	.cta-section {
 		padding: 6rem 1rem;
 		background-color: var(--color-accent);
@@ -196,7 +194,7 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 		padding: 1rem 2.5rem;
 		font-size: 1.2rem;
 		border-radius: 50px;
-		/* Rounded button for CTA */
+
 	}
 
 	.btn-white {
@@ -209,12 +207,11 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 		background-color: transparent;
 		color: var(--color-white);
 	}
-	/* ── Hero Video Styles ── */
+	
 	.hero-video {
 		padding: 2rem 1rem;
 		background-color: var(--color-white);
 		height: 70vh;
-		/* Pure White */
 	}
 	.video-container {
 		max-width: 1200px;
@@ -255,7 +252,7 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 
 	@media (max-width: 900px) {
 		.content-column {
-			order: -1; /* ahora va primero */
+			order: -1;
 		}
 		.hero-video {
 			height: auto;
@@ -279,7 +276,7 @@ const videoData: Home = await sanityClient.fetch(videoQuery);
 			width: 100%;
 		}
 	}
-	/*------------*/
+
 	@media (max-width: 768px) {
 		.cta-section {
 			padding: 4rem 1rem;

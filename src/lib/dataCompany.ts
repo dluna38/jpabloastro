@@ -39,10 +39,10 @@ export const myCompanyInfo: CompanyInfo = {
     logo: logo.src,
     email: 'informacion@juanpabloll.com',
     socials: {
-        instagram: { platform: 'instagram', url: 'https://instagram.com' },
+        instagram: { platform: 'instagram', url: 'https://www.instagram.com/Construccionesjuanpabloll' },
         facebook: { platform: 'facebook', url: 'https://facebook.com' },
         whatsapp: { platform: 'whatsapp', url: 'https://wa.me/573116105615?text=' + encodeURIComponent('¡Hola! Me gustaría hacer una consulta sobre sus servicios.') },
-        youtube: { platform: 'youtube', url: 'https://youtube.com' }
+        youtube: { platform: 'youtube', url: 'https://www.youtube.com/channel/UCWvvmCP-6b26bnJC-vPlezw' }
     }
 };
 

@@ -2,7 +2,8 @@
 import IconHandShake from "../components/icon/IconHandShake.astro";
 import ValorCard from "../components/ValorCard.astro";
 import BaseLayout, { type SEOProps } from "../layouts/BaseLayout.astro";
-
+import imagenEquipo from "../assets/equipo_trabajo.webp";
+import LogoFull from "../../public/logo_full.webp";
 import { myCompanyInfo } from "../lib/dataCompany.ts";
 import IconLightBulb from "../components/icon/IconLightBulb.astro";
 import IconShieldYes from "../components/icon/IconShieldYes.astro";
@@ -12,6 +13,7 @@ import IconJustice from "../components/icon/IconJustice.astro";
 import IconLeaf from "../components/icon/IconLeaf.astro";
 import SectionTitle from "../components/SectionTitle.astro";
 import { Image } from "astro:assets";
+
 const companyInfo = myCompanyInfo;
 
 const title = "Sobre Nosotros | Construcciones Juan Pablo II";
@@ -97,12 +99,12 @@ const customSEO: SEOProps = {
         </div>
         <div class="image-content">
           <Image
-            src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
+            src={imagenEquipo}
             alt="Proyecto en construcción"
             class="about-image"
             loading="lazy"
-            width={552}
-            height={368}
+            width={1200}
+            height={800}
           />
         </div>
       </div>
@@ -111,7 +113,7 @@ const customSEO: SEOProps = {
       <div class="container two-column reverse-mobile">
         <div class="image-content">
           <Image
-            src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1470&auto=format&fit=crop"
+            src={LogoFull}
             alt="Proyecto en construcción"
             class="about-image"
             loading="lazy"
@@ -327,6 +329,8 @@ const customSEO: SEOProps = {
 
   .about-image {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }

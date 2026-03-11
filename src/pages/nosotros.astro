@@ -3,6 +3,7 @@ import IconHandShake from "../components/icon/IconHandShake.astro";
 import ValorCard from "../components/ValorCard.astro";
 import BaseLayout, { type SEOProps } from "../layouts/BaseLayout.astro";
 import imagenEquipo from "../assets/equipo_trabajo.webp";
+import imagenLogo from "../assets/logo_cuadros.jpeg";
 import LogoFull from "../../public/logo_full.webp";
 import { myCompanyInfo } from "../lib/dataCompany.ts";
 import IconLightBulb from "../components/icon/IconLightBulb.astro";
@@ -113,7 +114,7 @@ const customSEO: SEOProps = {
       <div class="container two-column reverse-mobile">
         <div class="image-content">
           <Image
-            src={LogoFull}
+            src={imagenLogo}
             alt="Proyecto en construcción"
             class="about-image"
             loading="lazy"
